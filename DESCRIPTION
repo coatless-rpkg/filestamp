@@ -1,0 +1,29 @@
+Package: filestamp
+Title: Manage Copyright and Code Headers for R Files
+Version: 0.0.1
+Authors@R: c(
+    person("James Joseph", "Balamuta",
+            email = "james.balamuta@gmail.com", 
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0003-2826-8458")
+           )
+    )
+Description: Provides tools for creating, adding, and updating standardized headers 
+    for R files. Headers can include copyright notices, file descriptions, author information,
+    and other metadata. The package supports both individual files and batch processing of
+    entire directories.
+URL: https://r-pkg.thecoatlessprofessor.com/filestamp/, https://github.com/coatless-rpkg/filestamp
+BugReports: https://github.com/coatless-rpkg/filestamp/issues
+License: AGPL (>= 3)
+Depends: R (>= 4.4)
+Imports: 
+    stringr,
+    utils
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Config/testthat/edition: 3
