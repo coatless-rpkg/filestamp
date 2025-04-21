@@ -13,6 +13,18 @@ all files in your project, regardless of programming language. Headers
 can include copyright notices, file descriptions, authorship
 information, and other metadata.
 
+### What are file headers?
+
+File headers are structured comments at the beginning of code files that
+contain important metadata. For example, a header might include:
+
+``` r
+# Copyright (c) Acme Corp 2025
+# Author: Jane Developer
+# License: MIT
+# Last updated: 2025-04-21
+```
+
 ## Installation
 
 You can install the development version of `filestamp` from
@@ -88,6 +100,7 @@ The package comes with several built-in templates:
   information
 - `mit` - MIT License header
 - `gpl-3` - GNU General Public License header
+- `agpl-3` - GNU Affero General Public License header
 
 List available templates:
 
@@ -149,13 +162,17 @@ stamp_update("collaborative_script.R", list(
 
 ## Language Support
 
-The package supports many programming languages out of the box:
+`filestamp` supports 15+ programming languages out of the box:
 
 ``` r
-# List supported languages
+# List all supported languages
 languages()
+```
 
-# Register a custom language
+Add support for additional languages:
+
+``` r
+# Register a new language
 language_register(
   "kotlin",
   extensions = c("kt", "kts"),
@@ -167,9 +184,7 @@ language_register(
 
 ## Variables
 
-You can use variables in your templates to customize the header content.
-The package provides several built-in variables, and you can also define
-your own.
+Customize your headers with built-in and custom variables:
 
 ``` r
 # List available variables
@@ -178,9 +193,19 @@ stamp_variables_list()
 # Add a custom variable
 stamp_variables_add("team", "Data Science")
 
-# Set company name
+# Set company name globally
 options(filestamp.company = "Acme Corp")
 ```
+
+Built-in variables include:
+
+- `{{year}}` - Current year
+- `{{date}}` - Current date (YYYY-MM-DD)
+- `{{date_full}}` - Full timestamp
+- `{{user}}` - Current username
+- `{{company}}` - Company name from options
+- `{{filename}}` - Current file name
+- `{{file_ext}}` - File extension
 
 ## License
 
