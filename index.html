@@ -51,11 +51,21 @@
 <!-- badges: start -->
 
 <p><code>filestamp</code> makes it easy to add and maintain consistent headers across all files in your project, regardless of programming language. Headers can include copyright notices, file descriptions, authorship information, and other metadata.</p>
+<div class="section level3">
+<h3 id="what-are-file-headers">What are file headers?<a class="anchor" aria-label="anchor" href="#what-are-file-headers"></a>
+</h3>
+<p>File headers are structured comments at the beginning of code files that contain important metadata. For example, a header might include:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Copyright (c) Acme Corp 2025</span></span>
+<span><span class="co"># Author: Jane Developer</span></span>
+<span><span class="co"># License: MIT</span></span>
+<span><span class="co"># Last updated: 2025-04-21</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of <code>filestamp</code> from <a href="https://github.com/coatless-rpkg/filestamp" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span></span>
 <span><span class="co"># From GitHub</span></span>
@@ -69,14 +79,14 @@
 <h3 id="loading-the-package">Loading the Package<a class="anchor" aria-label="anchor" href="#loading-the-package"></a>
 </h3>
 <p>To use <code>filestamp</code>, you first need to load the package using the <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> function. This will make all the functions and features of <code>filestamp</code> available for use in your R session.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-pkg.thecoatlessprofessor.com/filestamp/" class="external-link">filestamp</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stamping-a-single-file">Stamping a Single File<a class="anchor" aria-label="anchor" href="#stamping-a-single-file"></a>
 </h3>
 <p>You can use the <code><a href="reference/stamp_file.html">stamp_file()</a></code> function to add a header to a single file. The function takes the file path as an argument and can also accept a template name or a custom template.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Stamp a file with the default template</span></span>
 <span><span class="fu"><a href="reference/stamp_file.html">stamp_file</a></span><span class="op">(</span><span class="st">"script.R"</span><span class="op">)</span></span>
 <span></span>
@@ -93,7 +103,7 @@
 <h3 id="stamping-a-directory-with-multiple-files">Stamping a Directory with Multiple Files<a class="anchor" aria-label="anchor" href="#stamping-a-directory-with-multiple-files"></a>
 </h3>
 <p>You can use the <code><a href="reference/stamp_dir.html">stamp_dir()</a></code> function to add headers to all files in a directory. You can specify a pattern to match specific file types, and you can also choose to stamp files in subdirectories.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Stamp all R files in a directory</span></span>
 <span><span class="fu"><a href="reference/stamp_dir.html">stamp_dir</a></span><span class="op">(</span><span class="st">"src"</span>, pattern <span class="op">=</span> <span class="st">"\\.R$"</span><span class="op">)</span></span>
 <span></span>
@@ -118,9 +128,11 @@
 <code>mit</code> - MIT License header</li>
 <li>
 <code>gpl-3</code> - GNU General Public License header</li>
+<li>
+<code>agpl-3</code> - GNU Affero General Public License header</li>
 </ul>
 <p>List available templates:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/stamp_templates.html">stamp_templates</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "default" "gpl-3"   "mit"</span></span></code></pre></div>
 </div>
@@ -128,7 +140,7 @@
 <h3 id="creating-custom-templates">Creating Custom Templates<a class="anchor" aria-label="anchor" href="#creating-custom-templates"></a>
 </h3>
 <p>You can create your own custom templates using the <code><a href="reference/stamp_template_create.html">stamp_template_create()</a></code> function. This allows you to define the fields and content of the header.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a custom template</span></span>
 <span><span class="va">my_template</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stamp_template_create.html">stamp_template_create</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"my_custom"</span>,</span>
@@ -156,7 +168,7 @@
 <p>Make sure to use the <code><a href="reference/stamp_update.html">stamp_update()</a></code> function carefully, as it will modify existing files. Always create backups before making changes.</p>
 <p>Some helper functions may not work as expected if the file does not contain a header or if the header is not in the expected format.</p>
 </blockquote>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Update copyright years in existing headers</span></span>
 <span><span class="fu"><a href="reference/stamp_update.html">stamp_update</a></span><span class="op">(</span><span class="st">"old_script.R"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  copyright <span class="op">=</span> <span class="fu"><a href="reference/stamp_update_helper_copyright_extend.html">stamp_update_helper_copyright_extend</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -170,12 +182,13 @@
 <div class="section level2">
 <h2 id="language-support">Language Support<a class="anchor" aria-label="anchor" href="#language-support"></a>
 </h2>
-<p>The package supports many programming languages out of the box:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># List supported languages</span></span>
-<span><span class="fu"><a href="reference/languages.html">languages</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Register a custom language</span></span>
+<p><code>filestamp</code> supports 15+ programming languages out of the box:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># List all supported languages</span></span>
+<span><span class="fu"><a href="reference/languages.html">languages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Add support for additional languages:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Register a new language</span></span>
 <span><span class="fu"><a href="reference/language_register.html">language_register</a></span><span class="op">(</span></span>
 <span>  <span class="st">"kotlin"</span>,</span>
 <span>  extensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"kt"</span>, <span class="st">"kts"</span><span class="op">)</span>,</span>
@@ -187,16 +200,33 @@
 <div class="section level2">
 <h2 id="variables">Variables<a class="anchor" aria-label="anchor" href="#variables"></a>
 </h2>
-<p>You can use variables in your templates to customize the header content. The package provides several built-in variables, and you can also define your own.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>Customize your headers with built-in and custom variables:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List available variables</span></span>
 <span><span class="fu"><a href="reference/stamp_variables_list.html">stamp_variables_list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add a custom variable</span></span>
 <span><span class="fu"><a href="reference/stamp_variables_add.html">stamp_variables_add</a></span><span class="op">(</span><span class="st">"team"</span>, <span class="st">"Data Science"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Set company name</span></span>
+<span><span class="co"># Set company name globally</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>filestamp.company <span class="op">=</span> <span class="st">"Acme Corp"</span><span class="op">)</span></span></code></pre></div>
+<p>Built-in variables include:</p>
+<ul>
+<li>
+<code>{{year}}</code> - Current year</li>
+<li>
+<code>{{date}}</code> - Current date (YYYY-MM-DD)</li>
+<li>
+<code>{{date_full}}</code> - Full timestamp</li>
+<li>
+<code>{{user}}</code> - Current username</li>
+<li>
+<code>{{company}}</code> - Company name from options</li>
+<li>
+<code>{{filename}}</code> - Current file name</li>
+<li>
+<code>{{file_ext}}</code> - File extension</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
