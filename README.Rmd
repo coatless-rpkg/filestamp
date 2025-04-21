@@ -1,24 +1,33 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# filestamp <img src="man/figures/filestamp-animated-logo.svg" width="170" align="right" alt="A hexagonal logo for filestamp"/>
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# filestamp <img src="man/figures/filestamp-animated-logo.svg" width="170" align="right" alt="A hexagonal logo for filestamp"/> 
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/coatless-rpkg/filestamp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/coatless-rpkg/filestamp/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-`filestamp` makes it easy to add and maintain consistent headers across
-all files in your project, regardless of programming language. Headers
-can include copyright notices, file descriptions, authorship
-information, and other metadata.
+`filestamp` makes it easy to add and maintain consistent headers across all files in your project, regardless of programming language. Headers can include copyright notices, file descriptions, authorship information, and other metadata.
 
 ## Installation
 
-You can install the development version of `filestamp` from
-[GitHub](https://github.com/coatless-rpkg/filestamp) with:
+You can install the development version of `filestamp` from [GitHub][filestamp-gh] with:
 
-``` r
+```{r}
+#| label: setup
+#| eval: false
 # install.packages("remotes")
 
 # From GitHub
@@ -27,27 +36,25 @@ remotes::install_github("coatless-rpkg/filestamp")
 
 ## Getting Started
 
-This section provides a few examples of how to use `filestamp` to add
-headers to your files. For more detailed information, please refer to
-the package documentation.
+This section provides a few examples of how to use `filestamp` to add headers to your files. For more detailed information, please refer to the package documentation.
 
 ### Loading the Package
 
-To use `filestamp`, you first need to load the package using the
-`library()` function. This will make all the functions and features of
-`filestamp` available for use in your R session.
+To use `filestamp`, you first need to load the package using the `library()` function. This will make all the functions and features of `filestamp` available for use in your R session.
 
-``` r
+```{r}
+#| label: setup-usage
 library(filestamp)
 ```
 
 ### Stamping a Single File
 
-You can use the `stamp_file()` function to add a header to a single
-file. The function takes the file path as an argument and can also
-accept a template name or a custom template.
+You can use the `stamp_file()` function to add a header to a single file. The function takes the file path as an argument and can also accept a template name or a custom template.
 
-``` r
+```{r}
+#| label: add-headers
+#| eval: false
+
 # Stamp a file with the default template
 stamp_file("script.R")
 
@@ -61,13 +68,14 @@ stamp_file("script.R", action = "dryrun")
 stamp_file("important_script.R", action = "backup")
 ```
 
+
 ### Stamping a Directory with Multiple Files
 
-You can use the `stamp_dir()` function to add headers to all files in a
-directory. You can specify a pattern to match specific file types, and
-you can also choose to stamp files in subdirectories.
+You can use the `stamp_dir()` function to add headers to all files in a directory. You can specify a pattern to match specific file types, and you can also choose to stamp files in subdirectories.
 
-``` r
+```{r}
+#| label: stamp-dir
+#| eval: false
 # Stamp all R files in a directory
 stamp_dir("src", pattern = "\\.R$")
 
@@ -84,25 +92,25 @@ stamp_dir("src", template = "gpl-3")
 
 The package comes with several built-in templates:
 
-- `default` - A simple header with copyright, author, and license
-  information
+- `default` - A simple header with copyright, author, and license information
 - `mit` - MIT License header
 - `gpl-3` - GNU General Public License header
 
 List available templates:
 
-``` r
+
+```{r}
+#| label: stamp-templates
 stamp_templates()
-#> [1] "default" "gpl-3"   "mit"
 ```
 
 ### Creating Custom Templates
 
-You can create your own custom templates using the
-`stamp_template_create()` function. This allows you to define the fields
-and content of the header.
+You can create your own custom templates using the `stamp_template_create()` function. This allows you to define the fields and content of the header.
 
-``` r
+```{r}
+#| label: custom-template
+#| eval: false
 # Create a custom template
 my_template <- stamp_template_create(
   name = "my_custom",
@@ -123,19 +131,18 @@ stamp_file("script.R", template = my_template)
 
 ## Updating Existing Headers
 
-You can update existing headers in files using the `stamp_update()`
-function. This is useful for changing copyright years, adding new
-authors, or modifying other metadata.
+You can update existing headers in files using the `stamp_update()` function. This is useful for changing copyright years, adding new authors, or modifying other metadata.
 
-> \[!IMPORTANT\]
+> [!IMPORTANT]
 >
-> Make sure to use the `stamp_update()` function carefully, as it will
-> modify existing files. Always create backups before making changes.
+> Make sure to use the `stamp_update()` function carefully, as it will modify existing files. Always create backups before making changes.
 >
-> Some helper functions may not work as expected if the file does not
-> contain a header or if the header is not in the expected format.
+> Some helper functions may not work as expected if the file does not contain a header
+> or if the header is not in the expected format.
 
-``` r
+```{r}
+#| label: existing-header
+#| eval: false
 # Update copyright years in existing headers
 stamp_update("old_script.R", list(
   copyright = stamp_update_helper_copyright_extend()
@@ -151,7 +158,9 @@ stamp_update("collaborative_script.R", list(
 
 The package supports many programming languages out of the box:
 
-``` r
+```{r}
+#| label: language-supported
+#| eval: false
 # List supported languages
 languages()
 
@@ -167,11 +176,11 @@ language_register(
 
 ## Variables
 
-You can use variables in your templates to customize the header content.
-The package provides several built-in variables, and you can also define
-your own.
+You can use variables in your templates to customize the header content. The package provides several built-in variables, and you can also define your own.
 
-``` r
+```{r}
+#| label: stamp-template-variables
+#| eval: false
 # List available variables
 stamp_variables_list()
 
@@ -184,4 +193,6 @@ options(filestamp.company = "Acme Corp")
 
 ## License
 
-AGPL (\>= 3)
+AGPL (>= 3)
+
+[filestamp-gh]: https://github.com/coatless-rpkg/filestamp
