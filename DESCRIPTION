@@ -17,10 +17,11 @@ BugReports: https://github.com/coatless-rpkg/filestamp/issues
 License: AGPL (>= 3)
 Depends: R (>= 4.4)
 Imports: 
-    stringr,
-    utils
+    cli, 
+    yaml
 Suggests:
     testthat (>= 3.0.0),
+    withr,
     knitr,
     rmarkdown
 Encoding: UTF-8
