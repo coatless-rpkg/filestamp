@@ -1,0 +1,19 @@
+name: default
+fields:
+  copyright:
+    default: "{{company}} {{year}}"
+    required: true
+  author:
+    default: "{{user}}"
+    required: true
+  license:
+    default: "All rights reserved."
+    required: true
+  last_updated:
+    default: "{{date_full}}"
+    required: false
+content: |
+  Copyright (c) {{copyright}}
+  Author: {{author}}
+  License: {{license}}
+  Last updated: {{last_updated}}

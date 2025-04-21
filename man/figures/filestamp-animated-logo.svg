@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 600 600">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #27c93f;
+      }
+
+      .st1 {
+        fill: #c678dd;
+      }
+
+      .st1, .st2, .st3, .st4, .st5, .st6, .st7 {
+        font-size: 19.6px;
+      }
+
+      .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8 {
+        font-family: CourierNewPSMT, 'Courier New';
+      }
+
+      .st1, .st2, .st3, .st4, .st9, .st8 {
+        isolation: isolate;
+      }
+
+      .st2, .st6, .st8 {
+        fill: #abb2bf;
+      }
+
+      .st3 {
+        fill: #98c379;
+      }
+
+      .st10 {
+        fill-opacity: .1;
+      }
+
+      .st10, .st11 {
+        fill: #61dafb;
+      }
+
+      .st12, .st13, .st5 {
+        stroke-width: 2px;
+      }
+
+      .st12, .st13, .st5, .st14 {
+        stroke: #61dafb;
+      }
+
+      .st12, .st5 {
+        fill: none;
+      }
+
+      .st13, .st7 {
+        fill: #21252b;
+      }
+
+      .st4 {
+        fill: #e06c75;
+      }
+
+      .st15 {
+        fill: #ff5f56;
+      }
+
+      .st16 {
+        fill: #ffbd2e;
+      }
+
+      .st17 {
+        fill: #2c313a;
+      }
+
+      .st14 {
+        stroke-width: 8px;
+      }
+
+      .st14, .st9 {
+        fill: #282c34;
+      }
+
+      .st9 {
+        font-family: CourierNewPS-BoldMT, 'Courier New';
+        font-size: 33px;
+        font-weight: 700;
+      }
+
+      .st8 {
+        font-size: 17.7px;
+      }
+    </style>
+  </defs>
+  <path class="st14" d="M297.5,5.2l260.3,147.3v294.6l-260.3,147.3L37.2,447.2V152.5L297.5,5.2Z"/>
+  <rect class="st13" x="123.6" y="144.1" width="353.6" height="293.3" rx="10" ry="10"/>
+  <rect class="st17" x="124.9" y="175.1" width="33" height="260.7" rx="7.9" ry="7.9"/>
+  <rect class="st11" x="120.5" y="144.1" width="359.1" height="39.3" rx="10" ry="10"/>
+  <circle class="st15" cx="143.2" cy="163.7" r="6.9"/>
+  <circle class="st16" cx="167.8" cy="163.7" r="6.9"/>
+  <circle class="st0" cx="192.3" cy="163.7" r="6.9"/>
+  <text class="st9" transform="translate(223.7 172.4)"><tspan x="0" y="0">filestamp</tspan></text>
+  <text class="st8" transform="translate(135 207.9)"><tspan x="0" y="0">1</tspan></text>
+  <text class="st8" transform="translate(135 237.4)"><tspan x="0" y="0">2</tspan></text>
+  <text class="st8" transform="translate(135 266.9)"><tspan x="0" y="0">3</tspan></text>
+  <text class="st8" transform="translate(135 296.3)"><tspan x="0" y="0">4</tspan></text>
+  <text class="st8" transform="translate(135 325.8)"><tspan x="0" y="0">5</tspan></text>
+  <text class="st8" transform="translate(135 355.3)"><tspan x="0" y="0">6</tspan></text>
+  <text class="st8" transform="translate(135 384.7)"><tspan x="0" y="0">7</tspan></text>
+  <text class="st8" transform="translate(135 414.2)"><tspan x="0" y="0">8</tspan></text>
+  <rect class="st10" x="158" y="181.3" width="319.2" height="66"/>
+  <text class="st3" transform="translate(167.8 207.9)"><tspan x="0" y="0"># Copyright: 2025</tspan></text>
+  <text class="st3" transform="translate(167.8 237.4)"><tspan x="0" y="0"># Stamp File Headers</tspan></text>
+  <text class="st4" transform="translate(167.8 296.3)"><tspan x="0" y="0">hello_world</tspan></text>
+  <g>
+    <text class="st7" transform="translate(303.8 296.6)"><tspan x="0" y="0">&lt;-</tspan></text>
+    <text class="st6" transform="translate(303.8 296.6)"><tspan x="0" y="0">&lt;-</tspan></text>
+    <text class="st5" transform="translate(303.8 296.6)"><tspan x="0" y="0">&lt;-</tspan></text>
+  </g>
+  <text class="st1" transform="translate(331 296)"><tspan x="0" y="0">function</tspan></text>
+  <text class="st2" transform="translate(424.2 296)"><tspan x="0" y="0">() {</tspan></text>
+  <text class="st4" transform="translate(187.4 326)"><tspan x="0" y="0">message</tspan></text>
+  <text class="st2" transform="translate(266 325.8)"><tspan x="0" y="0">(</tspan></text>
+  <text class="st3" transform="translate(275.8 325.8)"><tspan x="0" y="0">&quot;Hello, world!&quot;</tspan></text>
+  <text class="st2" transform="translate(450 325.8)"><tspan x="0" y="0">)</tspan></text>
+  <text class="st2" transform="translate(167.8 355.3)"><tspan x="0" y="0">}</tspan></text>
+  <line class="st12" x1="167.8" y1="419.5" x2="167.8" y2="399.8">
+    <animate accumulate="none" additive="replace" attributeName="opacity" calcMode="linear" dur="1.5s" fill="remove" repeatCount="indefinite" restart="always" values="1;0;1"/>
+  </line>
+</svg>
