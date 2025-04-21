@@ -1,3 +1,20 @@
+# Copyright (c) 2025
+# Author: James J Balamuta
+# License: GNU Affero General Public License v3.0 or later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #' Print method for templates
 #'
 #' @param x stamp_template object.
@@ -8,7 +25,7 @@
 #' @method print stamp_template
 print.stamp_template <- function(x, ...) {
   cli::cli_h1("Template: {x$name}")
-  
+
   cli::cli_h2("Fields:")
   for (field_name in names(x$fields)) {
     field <- x$fields[[field_name]]
@@ -16,10 +33,10 @@ print.stamp_template <- function(x, ...) {
     required <- if (field$required) "Required" else "Optional"
     cli::cli_li("{field_name}: {default} ({required})")
   }
-  
+
   cli::cli_h2("Content:")
   cli::cli_code(x$content)
-  
+
   invisible(x)
 }
 
@@ -33,10 +50,10 @@ print.stamp_template <- function(x, ...) {
 #' @method print stamp_preview
 print.stamp_preview <- function(x, ...) {
   cli::cli_h1("Preview for: {x$file}")
-  
+
   cli::cli_h2("Header to be inserted:")
   cli::cli_code(x$header)
-  
+
   cli::cli_h2("Insertion point:")
   if (x$insert_position == 0) {
     cli::cli_text("Beginning of file")
@@ -45,12 +62,12 @@ print.stamp_preview <- function(x, ...) {
   } else {
     cli::cli_text("Line {x$insert_position}")
   }
-  
+
   cli::cli_h2("File properties:")
   cli::cli_li("Encoding: {x$encoding}")
   cli::cli_li("Line ending: {if (x$line_ending == '\n') 'LF' else if (x$line_ending == '\r') 'CR' else 'CRLF'}")
   cli::cli_li("Read-only: {if (x$read_only) 'Yes' else 'No'}")
-  
+
   invisible(x)
 }
 
@@ -64,19 +81,19 @@ print.stamp_preview <- function(x, ...) {
 #' @method print stamp_language
 print.stamp_language <- function(x, ...) {
   cli::cli_h1("Language: {x$name}")
-  
+
   cli::cli_h2("File extensions:")
   extensions <- paste(x$extensions, collapse = ", ")
   cli::cli_text(extensions)
-  
+
   cli::cli_h2("Comment style:")
   cli::cli_li("Single line: {x$comment_single}")
-  
+
   if (!is.null(x$comment_multi_start) && !is.null(x$comment_multi_end)) {
     cli::cli_li("Multi-line start: {x$comment_multi_start}")
     cli::cli_li("Multi-line end: {x$comment_multi_end}")
   }
-  
+
   invisible(x)
 }
 
@@ -90,17 +107,17 @@ print.stamp_language <- function(x, ...) {
 #' @method print stamp_dir_results
 print.stamp_dir_results <- function(x, ...) {
   cli::cli_h1("Directory Stamping Results: {x$dir}")
-  
+
   cli::cli_h2("Action: {x$action}")
-  
+
   success_count <- sum(sapply(x$results, function(r) r$status == "success"))
   error_count <- sum(sapply(x$results, function(r) r$status == "error"))
-  
+
   cli::cli_alert_success("{success_count} files successfully processed")
-  
+
   if (error_count > 0) {
     cli::cli_alert_danger("{error_count} files had errors")
-    
+
     cli::cli_h2("Errors:")
     for (result in x$results) {
       if (result$status == "error") {
@@ -108,7 +125,7 @@ print.stamp_dir_results <- function(x, ...) {
       }
     }
   }
-  
+
   invisible(x)
 }
 
@@ -122,11 +139,11 @@ print.stamp_dir_results <- function(x, ...) {
 #' @method print stamp_file_info
 print.stamp_file_info <- function(x, ...) {
   cli::cli_h1("File Information: {x$path}")
-  
+
   cli::cli_li("Encoding: {x$encoding}")
   cli::cli_li("Line ending: {if (x$line_ending == '\n') 'LF' else if (x$line_ending == '\r') 'CR' else 'CRLF'}")
   cli::cli_li("Read-only: {if (x$read_only) 'Yes' else 'No'}")
-  
+
   invisible(x)
 }
 
@@ -140,19 +157,19 @@ print.stamp_file_info <- function(x, ...) {
 #' @method print stamp_update_preview
 print.stamp_update_preview <- function(x, ...) {
   cli::cli_h1("Update Preview for: {x$file}")
-  
+
   cli::cli_h2("Updated fields:")
   for (field_name in names(x$fields)) {
     cli::cli_li("{field_name}: {x$fields[[field_name]]}")
   }
-  
+
   cli::cli_h2("Header location:")
   cli::cli_text("Lines {x$range[1]} to {x$range[2]}")
-  
+
   cli::cli_h2("File properties:")
   cli::cli_li("Encoding: {x$encoding}")
   cli::cli_li("Line ending: {if (x$line_ending == '\n') 'LF' else if (x$line_ending == '\r') 'CR' else 'CRLF'}")
   cli::cli_li("Read-only: {if (x$read_only) 'Yes' else 'No'}")
-  
+
   invisible(x)
 }
