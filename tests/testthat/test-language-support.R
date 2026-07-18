@@ -190,10 +190,13 @@ test_that("detect_language(): identifies language by extension", {
   py_result <- detect_language(py_file)
   expect_equal(py_result$name, "python_test")
 
-  # Execute & Verify: Unknown extension
+  # Execute & Verify: Unknown extension returns NULL so callers can skip it
+  # rather than silently stamping it with the wrong comment syntax
   unknown_file <- "script.unknown"
-  unknown_result <- detect_language(unknown_file)
-  expect_equal(unknown_result$name, "text")  # Default to text
+  expect_null(detect_language(unknown_file))
+
+  # Execute & Verify: No extension also returns NULL
+  expect_null(detect_language("Makefile"))
 })
 
 # Test format_header() ----
@@ -298,4 +301,138 @@ test_that(".onLoad registers default languages", {
     expect_equal(c_lang$comment_multi_start, "/*")
     expect_equal(c_lang$comment_multi_end, "*/")
   })
+})
+
+# Per-language stamping round-trip ----
+
+test_that("stamp_file(): round-trips every registered language", {
+  # For each language, stamp a representative file and confirm the comment
+  # style is applied and the header is detected afterward. Pins format_header
+  # and has_header against a regression in any language's comment definition.
+  cases <- list(
+    list(ext = "R",    marker = "# ",     block = FALSE),
+    list(ext = "py",   marker = '"""',    block = TRUE),
+    list(ext = "c",    marker = "/*",     block = TRUE),
+    list(ext = "cpp",  marker = "/*",     block = TRUE),
+    list(ext = "java", marker = "/*",     block = TRUE),
+    list(ext = "js",   marker = "/*",     block = TRUE),
+    list(ext = "ts",   marker = "/*",     block = TRUE),
+    list(ext = "rs",   marker = "/*",     block = TRUE),
+    list(ext = "rb",   marker = "=begin", block = TRUE),
+    list(ext = "pl",   marker = "# ",     block = FALSE),
+    list(ext = "sh",   marker = "# ",     block = FALSE),
+    list(ext = "sql",  marker = "/*",     block = TRUE),
+    list(ext = "yml",  marker = "# ",     block = FALSE),
+    list(ext = "md",   marker = "<!--",   block = TRUE),
+    list(ext = "html", marker = "<!--",   block = TRUE),
+    list(ext = "css",  marker = "/*",     block = TRUE),
+    list(ext = "txt",  marker = "# ",     block = FALSE),
+    # Newly added languages
+    list(ext = "go",   marker = "/*",     block = TRUE),
+    list(ext = "kt",   marker = "/*",     block = TRUE),
+    list(ext = "swift",marker = "/*",     block = TRUE),
+    list(ext = "cs",   marker = "/*",     block = TRUE),
+    list(ext = "scala",marker = "/*",     block = TRUE),
+    list(ext = "dart", marker = "/*",     block = TRUE),
+    list(ext = "mm",   marker = "/*",     block = TRUE),
+    list(ext = "jl",   marker = "#=",     block = TRUE),
+    list(ext = "ex",   marker = "# ",     block = FALSE),
+    list(ext = "hs",   marker = "{-",     block = TRUE),
+    list(ext = "lua",  marker = "--[[",   block = TRUE),
+    list(ext = "ps1",  marker = "<#",     block = TRUE),
+    list(ext = "tex",  marker = "% ",     block = FALSE),
+    list(ext = "f90",  marker = "! ",     block = FALSE),
+    list(ext = "toml", marker = "# ",     block = FALSE),
+    list(ext = "scss", marker = "/*",     block = TRUE),
+    list(ext = "less", marker = "/*",     block = TRUE),
+    list(ext = "sass", marker = "// ",    block = FALSE),
+    list(ext = "rmd",  marker = "<!--",   block = TRUE),
+    list(ext = "qmd",  marker = "<!--",   block = TRUE)
+  )
+
+  for (case in cases) {
+    test_file <- withr::local_tempfile(fileext = paste0(".", case$ext))
+    writeLines("body content", test_file)
+    suppressWarnings(stamp_file(test_file, copyright = "2025", author = "Jane"))
+    content <- readLines(test_file)
+
+    if (case$block) {
+      expect_equal(content[1], case$marker,
+                   info = paste(case$ext, "block-comment opener"))
+    } else {
+      expect_match(content[1], paste0("^", case$marker, "Copyright"),
+                   info = paste(case$ext, "single-line comment"))
+    }
+    expect_true(has_header(test_file),
+                info = paste(case$ext, "detected after stamping"))
+  }
+})
+
+test_that("stamp_file(): stamps a PHP file with no open tag using a block comment", {
+  test_file <- withr::local_tempfile(fileext = ".php")
+  writeLines("echo 'hi';", test_file)
+  suppressWarnings(stamp_file(test_file, copyright = "2025", author = "Jane"))
+  expect_equal(readLines(test_file)[1], "/*")
+  expect_true(has_header(test_file))
+})
+
+test_that("detect_language(): follows file-extension semantics", {
+  expect_equal(detect_language("my.script.R")$name, "r")
+  expect_equal(detect_language("a.b.c.py")$name, "python")
+  expect_equal(detect_language("SCRIPT.PY")$name, "python")   # case-folded
+  expect_null(detect_language("Makefile"))                    # no extension
+  expect_null(detect_language(".Rprofile"))                   # dotfile, no ext
+})
+
+test_that("detect_language(): recognizes new languages and R-ecosystem files", {
+  expect_equal(detect_language("main.go")$name, "go")
+  expect_equal(detect_language("App.kt")$name, "kotlin")
+  expect_equal(detect_language("Model.swift")$name, "swift")
+  expect_equal(detect_language("Program.cs")$name, "csharp")
+  expect_equal(detect_language("analysis.jl")$name, "julia")
+  expect_equal(detect_language("script.lua")$name, "lua")
+  expect_equal(detect_language("deploy.ps1")$name, "powershell")
+  expect_equal(detect_language("config.toml")$name, "toml")
+  expect_equal(detect_language("paper.tex")$name, "latex")
+  # R-ecosystem files that used to be silently skipped
+  expect_equal(detect_language("vignette.Rmd")$name, "rmarkdown")
+  expect_equal(detect_language("report.qmd")$name, "quarto")
+  expect_equal(detect_language("sweave.Rnw")$name, "latex")
+})
+
+test_that("detect_language(): leaves ambiguous extensions unregistered (safe skip)", {
+  # .m (Objective-C vs MATLAB vs Mathematica), .cls (LaTeX vs Apex vs VBA),
+  # and fixed-form Fortran (.f/.for) all have conflicting comment syntax,
+  # so they must fall through to NULL -> skip+warn rather than be corrupted.
+  expect_null(detect_language("matrix.m"))
+  expect_null(detect_language("MyClass.cls"))
+  expect_null(detect_language("legacy.f"))
+  expect_null(detect_language("legacy.for"))
+
+  # Objective-C++ (.mm) is unambiguous and IS registered
+  expect_equal(detect_language("View.mm")$name, "objective-c")
+})
+
+test_that("stamp_file(): stamps an R Markdown file after its YAML front matter", {
+  test_file <- withr::local_tempfile(fileext = ".Rmd")
+  writeLines(c(
+    "---",
+    "title: \"My Vignette\"",
+    "output: html_document",
+    "---",
+    "",
+    "# Introduction",
+    "",
+    "Some prose."
+  ), test_file)
+
+  suppressWarnings(stamp_file(test_file, copyright = "2025", author = "Jane"))
+  content <- readLines(test_file)
+
+  # YAML front matter stays first; header is an HTML comment block after it
+  expect_equal(content[1:4], c("---", "title: \"My Vignette\"",
+                               "output: html_document", "---"))
+  expect_equal(content[5], "<!--")
+  expect_true(any(grepl("Copyright \\(c\\) 2025", content)))
+  expect_true(has_header(test_file))
 })
