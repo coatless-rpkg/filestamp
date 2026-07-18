@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# filestamp <img src="man/figures/filestamp-animated-logo.svg" width="170" align="right" alt="A hexagonal logo for filestamp"/>
+# filestamp <picture><source media="(prefers-color-scheme: dark)" srcset="man/figures/filestamp-logo-dark-animated.svg"><img src="man/figures/filestamp-logo-light-animated.svg" width="170" align="right" alt="A hexagonal logo for filestamp"/></picture>
 
 <!-- badges: start -->
 
@@ -12,6 +12,8 @@
 all files in your project, regardless of programming language. Headers
 can include copyright notices, file descriptions, authorship
 information, and other metadata.
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="man/figures/hero-dark.svg"><img src="man/figures/hero-light.svg" alt="Three steps: a plain source file, your header template with copyright, author, and license fields whose variables are filled in automatically, and the file with the rendered header stamped at the top in its own comment style, above the untouched code." width="100%"/></picture>
 
 ### What are file headers?
 
@@ -94,19 +96,23 @@ stamp_dir("src", template = "gpl-3")
 
 ### Using Built-in Templates
 
-The package comes with several built-in templates:
+The package comes with built-in templates for the most common licenses,
+each reproducing the canonical license text:
 
 - `default` - A simple header with copyright, author, and license
   information
-- `mit` - MIT License header
-- `gpl-3` - GNU General Public License header
-- `agpl-3` - GNU Affero General Public License header
+- Permissive: `mit`, `apache-2.0`, `bsd-2-clause`, `bsd-3-clause`,
+  `isc`, `bsl-1.0`
+- Copyleft: `gpl-2`, `gpl-3`, `lgpl-2.1`, `lgpl-3`, `agpl-3`, `mpl-2.0`
+- Public domain: `unlicense`, `cc0-1.0`
 
 List available templates:
 
 ``` r
 stamp_templates()
-#> [1] "default" "gpl-3"   "mit"
+#>  [1] "agpl-3"       "apache-2.0"   "bsd-2-clause" "bsd-3-clause" "bsl-1.0"     
+#>  [6] "cc0-1.0"      "default"      "gpl-2"        "gpl-3"        "isc"         
+#> [11] "lgpl-2.1"     "lgpl-3"       "mit"          "mpl-2.0"      "unlicense"
 ```
 
 ### Creating Custom Templates
@@ -148,16 +154,38 @@ authors, or modifying other metadata.
 > Some helper functions may not work as expected if the file does not
 > contain a header or if the header is not in the expected format.
 
-``` r
-# Update copyright years in existing headers
-stamp_update("old_script.R", list(
-  copyright = stamp_update_helper_copyright_extend()
-))
+The two most common tasks have direct verbs:
 
-# Add a new author to existing headers
-stamp_update("collaborative_script.R", list(
-  author = stamp_update_helper_author_add("Jane Smith")
-))
+``` r
+# Bump the copyright year to the current year
+stamp_bump_year("old_script.R")
+
+# Add a new author
+stamp_add_author("collaborative_script.R", "Jane Smith")
+```
+
+For anything else, pass named updates to `stamp_update()`. Each value is
+a new value or a function of the field’s current value:
+
+``` r
+stamp_update("script.R",
+  copyright = year_extend(),        # extend the year, keep the owner
+  author    = author_add("Jane Smith"),
+  license   = "MIT"                 # or just set a value
+)
+```
+
+Bundle a set of edits with `stamp_edits()` to reuse them, and point any
+update at a directory to apply it to every stamped file at once:
+
+``` r
+edits <- stamp_edits(
+  copyright = year_extend(),
+  author    = author_add("Jane Smith")
+)
+
+# update every already-stamped file in the project
+stamp_update("R/", edits, recursive = TRUE)
 ```
 
 ## Language Support

@@ -1,0 +1,41 @@
+// filestamp brand theme: warm paper + crimson stamp ink, light and dark.
+// Light-mode base (bg/fg/primary) is set via template.bslib in _pkgdown.yml.
+// This file tunes the warm neutral surfaces and defines the dark palette.
+
+// ---- Light mode: kraft-tinted surfaces and borders ----
+:root {
+  --bs-border-color: #E3D6BC;
+  --bs-secondary-bg: #F3EAD7;   // cards, code blocks
+  --bs-secondary-color: #7A6F5C;
+  --bs-tertiary-bg: #F7F1E4;
+  --bs-link-hover-color: #7C0F17;
+  --bs-code-color: #A31621;
+}
+
+// Code blocks: use the warm brand surface in both modes. pkgdown's syntax
+// theme hard-codes `pre{background:#f1f3f5}`, so scope higher to override it.
+main pre,
+.contents pre {
+  background-color: var(--bs-secondary-bg) !important;
+  border: 1px solid var(--bs-border-color);
+}
+
+// ---- Dark mode: warm near-black to match the logo ----
+[data-bs-theme="dark"] {
+  --bs-body-bg: #17120D;
+  --bs-body-color: #E9DFCE;
+  --bs-emphasis-color: #FBF8F2;
+  --bs-heading-color: #FBF8F2;
+
+  --bs-secondary-bg: #221913;   // cards, code blocks
+  --bs-secondary-color: #B8A894;
+  --bs-tertiary-bg: #1E160F;
+  --bs-border-color: #3A2C20;
+
+  // brighten the crimson accent so it reads on the dark ground
+  --bs-primary: #E4726E;
+  --bs-primary-rgb: 228, 114, 110;
+  --bs-link-color: #E4726E;
+  --bs-link-hover-color: #EF8B86;
+  --bs-code-color: #E9A3A0;
+}

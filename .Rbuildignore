@@ -8,3 +8,5 @@
 ^\.Rproj\.user$
 ^\.devcontainer$
 ^testing$
+^vignettes/\.quarto$
+^vignettes/.*_files$

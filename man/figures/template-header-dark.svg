@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 158" role="img" aria-labelledby="t d">
+  <title id="t">Template header rendering</title>
+  <desc id="d">Template variables are resolved and filled into the final license header.</desc>
+  <style>
+    .s{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .m{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
+    .lbl{letter-spacing:.10em;font-weight:700;font-size:11px}
+    .cap{font-size:11px}
+    .ink{fill:#E9DFCE}.fn{fill:#6FB2D6}.key{fill:#CE9A6A}.str{fill:#A3C07A}.num{fill:#E0A24E}
+    .com{fill:#8A7E6C}.var{fill:#E0A24E;font-weight:600}.stamp{fill:#E4726E}.faint{fill:#8A7E6C}
+    .card{fill:#221913;stroke:#3A2C20}
+    .badge{fill:#C63A43}.bnum{fill:#FBF8F2}.accent{fill:#E4726E}.astroke{stroke:#E4726E}
+    .chip{fill:#2A2016;stroke:#3A2C20}.ok{fill:#E4726E}.skip{fill:#8A7E6C}
+  </style>
+
+  <!-- COL 1: TEMPLATE -->
+  <text class="s lbl ink" x="24" y="22">TEMPLATE</text>
+  <rect class="card" x="24" y="44" width="274" height="58" rx="8" stroke-width="1"/>
+  <text class="m" x="42" y="68" xml:space="preserve"><tspan class="ink">Copyright (c) </tspan><tspan class="var">{{company}}</tspan><tspan class="ink"> </tspan><tspan class="var">{{year}}</tspan></text>
+  <text class="m" x="42" y="86" xml:space="preserve"><tspan class="ink">Author: </tspan><tspan class="var">{{author}}</tspan></text>
+
+  <!-- ARROW 1 -->
+  <path class="astroke" d="M302 73 H314" stroke-width="2"/>
+  <path class="accent" d="M314 68.5 L322 73 L314 77.5 z"/>
+
+  <!-- COL 2: VARIABLES -->
+  <text class="s lbl ink" x="330" y="22">VARIABLES</text>
+  <rect class="card" x="330" y="44" width="185" height="76" rx="8" stroke-width="1"/>
+  <text class="m" x="348" y="68" xml:space="preserve"><tspan class="ink">company = </tspan><tspan class="str">"Acme Corp"</tspan></text>
+  <text class="m" x="348" y="86" xml:space="preserve"><tspan class="ink">year    = </tspan><tspan class="num">2026</tspan></text>
+  <text class="m" x="348" y="104" xml:space="preserve"><tspan class="ink">author  = </tspan><tspan class="str">"Jane Doe"</tspan></text>
+
+  <!-- ARROW 2 -->
+  <path class="astroke" d="M519 73 H531" stroke-width="2"/>
+  <path class="accent" d="M531 68.5 L539 73 L531 77.5 z"/>
+
+  <!-- COL 3: RENDERED -->
+  <text class="s lbl ink" x="547" y="22">RENDERED</text>
+  <rect class="card" x="547" y="44" width="245" height="58" rx="8" stroke-width="1"/>
+  <rect class="accent" x="557" y="58" width="2.5" height="30" rx="1.25"/>
+  <text class="m stamp" x="569" y="68" xml:space="preserve">Copyright (c) Acme Corp 2026</text>
+  <text class="m stamp" x="569" y="86" xml:space="preserve">Author: Jane Doe</text>
+
+  <!-- CAPTION -->
+  <text class="s faint cap" x="24" y="138">Built-in and custom variables fill the blanks.</text>
+</svg>

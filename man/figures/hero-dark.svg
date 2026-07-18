@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 224" role="img" aria-labelledby="t d">
+  <title id="t">Stamp a consistent header onto any source file</title>
+  <desc id="d">Three steps. One: a plain source file with no header. Two: a header template with copyright, author, and license fields, where variables like company and author are filled in automatically. Three: the file with the rendered header stamped at the top in the file's own comment style, above the untouched code.</desc>
+  <style>
+    .s{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .m{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
+    .lbl{letter-spacing:.10em;font-weight:700;font-size:11px}
+    .cap{font-size:11px}
+    .ink{fill:#E9DFCE}.fn{fill:#6FB2D6}.key{fill:#CE9A6A}.str{fill:#A3C07A}.num{fill:#E0A24E}
+    .com{fill:#8A7E6C}.var{fill:#E0A24E;font-weight:600}.stamp{fill:#E4726E}.faint{fill:#8A7E6C}
+    .card{fill:#221913;stroke:#3A2C20}
+  </style>
+
+  <!-- step markers -->
+  <circle cx="32" cy="18" r="9" fill="#C63A43"/><text class="s" x="32" y="21.5" font-size="10.5" font-weight="700" text-anchor="middle" fill="#FBF8F2">1</text>
+  <text class="s lbl ink" x="48" y="22">A PLAIN FILE</text>
+  <circle cx="298" cy="18" r="9" fill="#C63A43"/><text class="s" x="298" y="21.5" font-size="10.5" font-weight="700" text-anchor="middle" fill="#FBF8F2">2</text>
+  <text class="s lbl ink" x="314" y="22">YOUR TEMPLATE</text>
+  <circle cx="616" cy="18" r="9" fill="#C63A43"/><text class="s" x="616" y="21.5" font-size="10.5" font-weight="700" text-anchor="middle" fill="#FBF8F2">3</text>
+  <text class="s lbl ink" x="632" y="22">STAMPED</text>
+
+  <!-- 1: plain file -->
+  <rect class="card" x="24" y="44" width="236" height="76" rx="8" stroke-width="1"/>
+  <text class="m" x="42" y="68" xml:space="preserve"><tspan class="fn">add</tspan><tspan class="ink"> &lt;- </tspan><tspan class="key">function</tspan><tspan class="ink">(x, y) {</tspan></text>
+  <text class="m ink" x="42" y="86" xml:space="preserve">  x + y</text>
+  <text class="m ink" x="42" y="104" xml:space="preserve">}</text>
+  <text class="s faint cap" x="26" y="138">R, Python, C++, SQL, and more.</text>
+
+  <!-- arrow 1 -->
+  <path d="M264 82 H276" stroke="#E4726E" stroke-width="2"/>
+  <path d="M276 77.5 L284 82 L276 86.5 z" fill="#E4726E"/>
+
+  <!-- 2: template -->
+  <rect class="card" x="290" y="44" width="288" height="76" rx="8" stroke-width="1"/>
+  <text class="m" x="308" y="68" xml:space="preserve"><tspan class="ink">Copyright (c) </tspan><tspan class="var">{{company}}</tspan><tspan class="ink"> </tspan><tspan class="var">{{year}}</tspan></text>
+  <text class="m" x="308" y="86" xml:space="preserve"><tspan class="ink">Author: </tspan><tspan class="var">{{author}}</tspan></text>
+  <text class="m" x="308" y="104" xml:space="preserve"><tspan class="ink">License: </tspan><tspan class="str">MIT</tspan></text>
+  <text class="s faint cap" x="292" y="138">A built-in license or your own.</text>
+
+  <!-- arrow 2 -->
+  <path d="M582 82 H594" stroke="#E4726E" stroke-width="2"/>
+  <path d="M594 77.5 L602 82 L594 86.5 z" fill="#E4726E"/>
+
+  <!-- 3: stamped -->
+  <rect class="card" x="608" y="44" width="238" height="148" rx="8" stroke-width="1"/>
+  <rect x="618" y="58" width="2.5" height="54" rx="1.25" fill="#E4726E"/>
+  <text class="m stamp" x="632" y="68" xml:space="preserve"># Copyright (c) Acme 2026</text>
+  <text class="m stamp" x="632" y="86" xml:space="preserve"># Author: Jane Doe</text>
+  <text class="m stamp" x="632" y="104" xml:space="preserve"># License: MIT</text>
+  <text class="m" x="632" y="140" xml:space="preserve"><tspan class="fn">add</tspan><tspan class="ink"> &lt;- </tspan><tspan class="key">function</tspan><tspan class="ink">(x, y) {</tspan></text>
+  <text class="m ink" x="632" y="158" xml:space="preserve">  x + y</text>
+  <text class="m ink" x="632" y="176" xml:space="preserve">}</text>
+  <text class="s faint cap" x="610" y="210">Consistent across the project.</text>
+</svg>

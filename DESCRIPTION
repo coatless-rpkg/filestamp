@@ -16,6 +16,8 @@ URL: https://r-pkg.thecoatlessprofessor.com/filestamp/, https://github.com/coatl
 BugReports: https://github.com/coatless-rpkg/filestamp/issues
 License: AGPL (>= 3)
 Depends: R (>= 4.4)
+SystemRequirements: Quarto command line tools
+    (https://github.com/quarto-dev/quarto-cli).
 Imports: 
     cli, 
     yaml
@@ -23,8 +25,10 @@ Suggests:
     testthat (>= 3.0.0),
     withr,
     knitr,
+    quarto,
     rmarkdown
+VignetteBuilder: quarto
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

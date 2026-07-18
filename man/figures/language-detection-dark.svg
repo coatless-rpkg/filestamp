@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 262" role="img" aria-labelledby="t d">
+  <title id="t">Language detection by file extension</title>
+  <desc id="d">A mapping of file extensions to the comment style filestamp uses for each, with JSON shown as skipped because it has no comment syntax.</desc>
+  <style>
+    .s{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .m{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
+    .lbl{letter-spacing:.10em;font-weight:700;font-size:11px}
+    .cap{font-size:11px}
+    .ink{fill:#E9DFCE}.fn{fill:#6FB2D6}.key{fill:#CE9A6A}.str{fill:#A3C07A}.num{fill:#E0A24E}
+    .com{fill:#8A7E6C}.var{fill:#E0A24E;font-weight:600}.stamp{fill:#E4726E}.faint{fill:#8A7E6C}
+    .card{fill:#221913;stroke:#3A2C20}
+    .badge{fill:#C63A43}.bnum{fill:#FBF8F2}.accent{fill:#E4726E}.astroke{stroke:#E4726E}
+    .chip{fill:#2A2016;stroke:#3A2C20}.ok{fill:#E4726E}.skip{fill:#8A7E6C}
+  </style>
+
+  <text class="s lbl ink" x="24" y="22">LANGUAGE DETECTION</text>
+
+  <!-- ===== Column 1 ===== -->
+  <rect class="chip" x="24" y="44" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="54" y="59" text-anchor="middle">.R</text>
+  <path class="astroke" d="M96 55 H106" stroke-width="2"/><path class="accent" d="M106 50.5 L114 55 L106 59.5 z"/>
+  <text class="m" x="126" y="59" xml:space="preserve"><tspan class="ink">#</tspan><tspan class="com"> ...</tspan></text>
+
+  <rect class="chip" x="24" y="76" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="54" y="91" text-anchor="middle">.py</text>
+  <path class="astroke" d="M96 87 H106" stroke-width="2"/><path class="accent" d="M106 82.5 L114 87 L106 91.5 z"/>
+  <text class="m" x="126" y="91" xml:space="preserve"><tspan class="ink">"""</tspan><tspan class="com"> ... </tspan><tspan class="ink">"""</tspan></text>
+
+  <rect class="chip" x="24" y="108" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="54" y="123" text-anchor="middle">.cpp</text>
+  <path class="astroke" d="M96 119 H106" stroke-width="2"/><path class="accent" d="M106 114.5 L114 119 L106 123.5 z"/>
+  <text class="m" x="126" y="123" xml:space="preserve"><tspan class="ink">/*</tspan><tspan class="com"> ... </tspan><tspan class="ink">*/</tspan></text>
+
+  <rect class="chip" x="24" y="140" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="54" y="155" text-anchor="middle">.html</text>
+  <path class="astroke" d="M96 151 H106" stroke-width="2"/><path class="accent" d="M106 146.5 L114 151 L106 155.5 z"/>
+  <text class="m" x="126" y="155" xml:space="preserve"><tspan class="ink">&lt;!--</tspan><tspan class="com"> ... </tspan><tspan class="ink">--&gt;</tspan></text>
+
+  <rect class="chip" x="24" y="172" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="54" y="187" text-anchor="middle">.rb</text>
+  <path class="astroke" d="M96 183 H106" stroke-width="2"/><path class="accent" d="M106 178.5 L114 183 L106 187.5 z"/>
+  <text class="m" x="126" y="187" xml:space="preserve"><tspan class="ink">=begin</tspan><tspan class="com"> ... </tspan><tspan class="ink">=end</tspan></text>
+
+  <rect class="chip" x="24" y="204" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="54" y="219" text-anchor="middle">.json</text>
+  <path class="astroke" d="M96 215 H106" stroke-width="2"/><path class="accent" d="M106 210.5 L114 215 L106 219.5 z"/>
+  <circle class="skip" cx="130" cy="215" r="3"/><text class="m skip" x="140" y="219">skipped</text>
+
+  <!-- ===== Column 2 ===== -->
+  <rect class="chip" x="286" y="44" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="316" y="59" text-anchor="middle">.lua</text>
+  <path class="astroke" d="M358 55 H368" stroke-width="2"/><path class="accent" d="M368 50.5 L376 55 L368 59.5 z"/>
+  <text class="m" x="388" y="59" xml:space="preserve"><tspan class="ink">--[[</tspan><tspan class="com"> ... </tspan><tspan class="ink">]]</tspan></text>
+
+  <rect class="chip" x="286" y="76" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="316" y="91" text-anchor="middle">.jl</text>
+  <path class="astroke" d="M358 87 H368" stroke-width="2"/><path class="accent" d="M368 82.5 L376 87 L368 91.5 z"/>
+  <text class="m" x="388" y="91" xml:space="preserve"><tspan class="ink">#=</tspan><tspan class="com"> ... </tspan><tspan class="ink">=#</tspan></text>
+
+  <rect class="chip" x="286" y="108" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="316" y="123" text-anchor="middle">.hs</text>
+  <path class="astroke" d="M358 119 H368" stroke-width="2"/><path class="accent" d="M368 114.5 L376 119 L368 123.5 z"/>
+  <text class="m" x="388" y="123" xml:space="preserve"><tspan class="ink">{-</tspan><tspan class="com"> ... </tspan><tspan class="ink">-}</tspan></text>
+
+  <rect class="chip" x="286" y="140" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="316" y="155" text-anchor="middle">.ps1</text>
+  <path class="astroke" d="M358 151 H368" stroke-width="2"/><path class="accent" d="M368 146.5 L376 151 L368 155.5 z"/>
+  <text class="m" x="388" y="155" xml:space="preserve"><tspan class="ink">&lt;#</tspan><tspan class="com"> ... </tspan><tspan class="ink">#&gt;</tspan></text>
+
+  <rect class="chip" x="286" y="172" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="316" y="187" text-anchor="middle">.tex</text>
+  <path class="astroke" d="M358 183 H368" stroke-width="2"/><path class="accent" d="M368 178.5 L376 183 L368 187.5 z"/>
+  <text class="m" x="388" y="187" xml:space="preserve"><tspan class="ink">%</tspan><tspan class="com"> ...</tspan></text>
+
+  <rect class="chip" x="286" y="204" width="60" height="22" rx="5" stroke-width="1"/><text class="m ink" x="316" y="219" text-anchor="middle">.f90</text>
+  <path class="astroke" d="M358 215 H368" stroke-width="2"/><path class="accent" d="M368 210.5 L376 215 L368 219.5 z"/>
+  <text class="m" x="388" y="219" xml:space="preserve"><tspan class="ink">!</tspan><tspan class="com"> ...</tspan></text>
+
+  <text class="s faint cap" x="24" y="250">Comment style is detected by file extension.</text>
+</svg>
