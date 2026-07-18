@@ -129,3 +129,76 @@ cli::test_that_cli("print.stamp_update_preview(): prints update preview", {
     print(update_preview)
   })
 }, configs = c("plain", "ansi", "unicode", "fancy"))
+
+# Test print.stamp_dir_results() with empty results ----
+
+test_that("print.stamp_dir_results(): handles empty results", {
+  # Setup: Stamp a directory containing no files
+  empty_dir <- file.path(tempdir(), "filestamp_empty_dir")
+  dir.create(empty_dir, showWarnings = FALSE)
+
+  # Execute & Verify: printing the result must not error
+  result <- suppressMessages(stamp_dir(empty_dir))
+  expect_no_error(suppressMessages(print(result)))
+
+  # Cleanup
+  unlink(empty_dir, recursive = TRUE)
+})
+
+# Print-method display branches (non-snapshot) ----
+
+# Helper: render a print method's output as plain text (ANSI stripped)
+print_text <- function(x) {
+  cli::ansi_strip(paste(cli::cli_fmt(print(x)), collapse = "\n"))
+}
+
+test_that("print.stamp_preview(): shows non-default insertion points and endings", {
+  # After a prologue line (shebang/php/doctype -> position 1)
+  preview_shebang <- structure(
+    list(file = "s.sh", header = "# H", insert_position = 1,
+         encoding = "UTF-8", line_ending = "\r\n", read_only = TRUE),
+    class = "stamp_preview"
+  )
+  out <- print_text(preview_shebang)
+  expect_match(out, "After line 1")
+  expect_match(out, "CRLF")
+  expect_match(out, "Read-only:\\s*Yes")
+})
+
+test_that("print.stamp_file_info(): shows CR line endings", {
+  info <- structure(
+    list(path = "f.R", encoding = "UTF-8", has_bom = FALSE,
+         line_ending = "\r", read_only = FALSE),
+    class = "stamp_file_info"
+  )
+  expect_match(print_text(info), "CR")
+})
+
+test_that("print.stamp_language(): omits multi-line rows for single-line languages", {
+  single <- language_get("r")       # comment_single only
+  out <- print_text(single)
+  expect_match(out, "Single line")
+  expect_no_match(out, "Multi-line")
+
+  multi <- language_get("c")        # has multi-line comments
+  expect_match(print_text(multi), "Multi-line")
+})
+
+test_that("print.stamp_dir_results(): reports errors and skips", {
+  results <- structure(
+    list(
+      results = list(
+        list(file = "a.R", status = "success"),
+        list(file = "b.json", status = "skipped"),
+        list(file = "c.R", status = "error", message = "boom")
+      ),
+      dir = "d", action = "modify"
+    ),
+    class = "stamp_dir_results"
+  )
+  out <- print_text(results)
+  expect_match(out, "1 files successfully processed")
+  expect_match(out, "1 files skipped")
+  expect_match(out, "1 files had errors")
+  expect_match(out, "boom")
+})

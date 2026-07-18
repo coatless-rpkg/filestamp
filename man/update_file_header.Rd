@@ -4,12 +4,15 @@
 \alias{update_file_header}
 \title{Update file header}
 \usage{
-update_file_header(file, header)
+update_file_header(file, header, requested = names(header$fields))
 }
 \arguments{
 \item{file}{Character. Path to file.}
 
 \item{header}{List. Header information from extract_header.}
+
+\item{requested}{Character. Field names the caller asked to update; a
+warning is emitted for any of these not found in the header.}
 }
 \value{
 TRUE invisibly on success.

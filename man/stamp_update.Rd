@@ -2,20 +2,50 @@
 % Please edit documentation in R/stamp-update.R
 \name{stamp_update}
 \alias{stamp_update}
-\title{Update existing file headers}
+\title{Update an existing file header}
 \usage{
-stamp_update(file, updates, action = "modify")
+stamp_update(file, ..., action = "modify", recursive = FALSE, pattern = NULL)
 }
 \arguments{
-\item{file}{Character. Path to file to update.}
+\item{file}{Character. Path to a file or directory to update.}
 
-\item{updates}{Named list. Updates to apply to header fields.}
+\item{...}{Named updates to apply to header fields (each value is a new value
+or a function of the field's current value), or a single \code{\link[=stamp_edits]{stamp_edits()}}
+bundle.}
 
 \item{action}{Character. Action to perform: "modify", "dryrun", or "backup".}
+
+\item{recursive}{Logical. When \code{file} is a directory, descend into
+subdirectories.}
+
+\item{pattern}{Character or NULL. When \code{file} is a directory, only update
+files whose name matches this pattern.}
 }
 \value{
-TRUE invisibly on success.
+TRUE invisibly on success (a \code{stamp_update_preview} for
+\code{action = "dryrun"}), or a \code{stamp_dir_results} object when \code{file} is a
+directory.
 }
 \description{
-Update existing file headers
+Revise a header that is already in a file, changing only the fields you name.
+Each update is either a replacement value or a function that receives the
+current value of the field and returns the new one. \code{\link[=year_extend]{year_extend()}} and
+\code{\link[=author_add]{author_add()}} build the two most useful such functions, and \code{\link[=stamp_edits]{stamp_edits()}}
+bundles a set of them for reuse. For the common tasks there are also dedicated
+verbs, \code{\link[=stamp_bump_year]{stamp_bump_year()}} and \code{\link[=stamp_add_author]{stamp_add_author()}}.
+}
+\details{
+If \code{file} is a directory, every already-stamped file it contains is updated
+and a \code{stamp_dir_results} object is returned.
+}
+\examples{
+file <- tempfile(fileext = ".R")
+writeLines(c("# Copyright (c) 2020", "# Author: Jane", "", "x <- 1"), file)
+
+stamp_update(file, copyright = year_extend(), author = author_add("Sam"))
+readLines(file)[1:2]
+}
+\seealso{
+\code{\link[=stamp_bump_year]{stamp_bump_year()}}, \code{\link[=stamp_add_author]{stamp_add_author()}}, \code{\link[=stamp_edits]{stamp_edits()}},
+\code{\link[=year_extend]{year_extend()}}, \code{\link[=author_add]{author_add()}}
 }

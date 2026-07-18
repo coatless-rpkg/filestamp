@@ -15,6 +15,36 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#' Print method for header edits
+#'
+#' @param x stamp_edits object.
+#' @param ... Additional arguments.
+#'
+#' @return The stamp_edits object, invisibly.
+#' @export
+#' @method print stamp_edits
+print.stamp_edits <- function(x, ...) {
+  cli::cli_h2("Header edits")
+
+  if (length(x) == 0) {
+    cli::cli_alert_info("No edits")
+    return(invisible(x))
+  }
+
+  for (field in names(x)) {
+    value <- x[[field]]
+    label <- if (is.function(value)) {
+      desc <- attr(value, "desc")
+      if (is.null(desc)) "a function of the current value" else desc
+    } else {
+      encodeString(format(value), quote = "\"")
+    }
+    cli::cli_li("{.field {field}}: {label}")
+  }
+
+  invisible(x)
+}
+
 #' Print method for templates
 #'
 #' @param x stamp_template object.
@@ -57,10 +87,8 @@ print.stamp_preview <- function(x, ...) {
   cli::cli_h2("Insertion point:")
   if (x$insert_position == 0) {
     cli::cli_text("Beginning of file")
-  } else if (x$insert_position == 1) {
-    cli::cli_text("After shebang")
   } else {
-    cli::cli_text("Line {x$insert_position}")
+    cli::cli_text("After line {x$insert_position}")
   }
 
   cli::cli_h2("File properties:")
@@ -106,14 +134,20 @@ print.stamp_language <- function(x, ...) {
 #' @export
 #' @method print stamp_dir_results
 print.stamp_dir_results <- function(x, ...) {
-  cli::cli_h1("Directory Stamping Results: {x$dir}")
+  operation <- if (is.null(x$operation)) "Stamping" else x$operation
+  cli::cli_h1("Directory {operation} Results: {x$dir}")
 
   cli::cli_h2("Action: {x$action}")
 
-  success_count <- sum(sapply(x$results, function(r) r$status == "success"))
-  error_count <- sum(sapply(x$results, function(r) r$status == "error"))
+  success_count <- sum(vapply(x$results, function(r) identical(r$status, "success"), logical(1)))
+  error_count <- sum(vapply(x$results, function(r) identical(r$status, "error"), logical(1)))
+  skipped_count <- sum(vapply(x$results, function(r) identical(r$status, "skipped"), logical(1)))
 
   cli::cli_alert_success("{success_count} files successfully processed")
+
+  if (skipped_count > 0) {
+    cli::cli_alert_info("{skipped_count} files skipped")
+  }
 
   if (error_count > 0) {
     cli::cli_alert_danger("{error_count} files had errors")
