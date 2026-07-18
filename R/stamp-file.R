@@ -39,15 +39,37 @@ stamp_file <- function(file, template = NULL, action = "modify", ...) {
 
   language <- detect_language(file)
 
-  result <- switch(action,
-                   "dryrun" = preview_stamp(file, template, language, ...),
-                   "backup" = {
-                     backup_file(file)
-                     modify_file(file, template, language, ...)
-                   },
-                   "modify" = modify_file(file, template, language, ...))
+  # Skip files with no known comment syntax rather than corrupting them
+  # (e.g. JSON, or any unregistered extension)
+  if (is.null(language)) {
+    cli::cli_warn(c(
+      "Skipping {.file {file}}: unrecognized file type.",
+      "i" = "No language with a known comment syntax is registered for this extension."
+    ))
+    return(invisible(FALSE))
+  }
 
-  invisible(result)
+  # A dry run never writes, so preview and return before touching the file
+  if (action == "dryrun") {
+    return(invisible(preview_stamp(file, template, language, ...)))
+  }
+
+  # Write preconditions, checked BEFORE any backup so a skipped or aborted
+  # operation never leaves an orphan .bck behind
+  file_info <- header_file_info(file)
+  if (file_info$read_only) {
+    cli::cli_abort("File is read-only: {file}")
+  }
+  if (has_header(file)) {
+    cli::cli_warn("File already has a header: {file}")
+    return(invisible(FALSE))
+  }
+
+  if (action == "backup") {
+    backup_file(file)
+  }
+
+  invisible(modify_file(file, template, language, ...))
 }
 
 #' Modify file with header
@@ -70,6 +92,12 @@ modify_file <- function(file, template, language, ...) {
 
   content <- readLines(file, warn = FALSE, encoding = file_info$encoding)
 
+  # Drop any leading BOM character from the first line; it is re-emitted as
+  # raw bytes on write so it stays at the very start, ahead of the header
+  if (file_info$has_bom && length(content) >= 1) {
+    content[1] <- sub("^\ufeff", "", content[1])
+  }
+
   # Check if file already has a header
   if (has_header(file)) {
     cli::cli_warn("File already has a header: {file}")
@@ -79,28 +107,35 @@ modify_file <- function(file, template, language, ...) {
   # Render template
   rendered <- render_template(template, file, ...)
 
-  # Format header
+  # Format header, split into lines so every line ending is normalized below
   header <- format_header(rendered, language)
+  header_lines <- unlist(strsplit(header, "\n", fixed = TRUE))
 
   # Determine insert position (shebang, YAML, etc.)
   insert_pos <- determine_insert_position(content)
 
-  # Insert header
-  new_content <- c(
-    if (insert_pos > 0) content[1:insert_pos] else NULL,
-    header,
-    if (insert_pos >= 0) content[(insert_pos + 1):length(content)] else content
-  )
+  # Separate the header from any content that follows it with a blank line
+  if (insert_pos < length(content) && nzchar(content[insert_pos + 1])) {
+    header_lines <- c(header_lines, "")
+  }
 
-  # Write back with original encoding and line endings
+  # Insert header
+  new_content <- append(content, header_lines, after = insert_pos)
+
+  # Write back with original encoding and line endings, keeping the
+  # file's final newline
   con <- file(file, "wb")
   on.exit(close(con))
 
-  # Convert to original line endings
-  text <- paste(new_content, collapse = file_info$line_ending)
+  text <- paste0(paste(new_content, collapse = file_info$line_ending),
+                 file_info$line_ending)
 
-  # Write with original encoding
-  writeBin(charToRaw(text), con)
+  # Write with original encoding, re-emitting a UTF-8 BOM if the file had one
+  raw_out <- charToRaw(text)
+  if (file_info$has_bom) {
+    raw_out <- c(as.raw(c(0xEF, 0xBB, 0xBF)), raw_out)
+  }
+  writeBin(raw_out, con)
 
   invisible(TRUE)
 }
@@ -154,25 +189,28 @@ preview_stamp <- function(file, template, language, ...) {
 #' @return Integer. Position to insert header (0 for beginning of file).
 #' @keywords internal
 determine_insert_position <- function(content) {
-  # Check for shebang
-  has_shebang <- length(content) > 0 && grepl("^#!", content[1])
+  # Insert after YAML front matter, if present
+  yaml_end <- yaml_front_matter_end(content)
+  if (yaml_end > 0) {
+    return(yaml_end)
+  }
 
-  # Check for YAML header
-  yaml_start <- which(grepl("^---\\s*$", content))[1]
-
-  if (!is.na(yaml_start) && yaml_start == 1) {
-    # Find end of YAML header
-    yaml_end <- which(grepl("^---\\s*$", content))
-
-    if (length(yaml_end) > 1) {
-      return(yaml_end[2])
+  # Insert after a first-line language prologue that must stay first:
+  # a shebang, a PHP open tag, an XML declaration, or an (X)HTML doctype.
+  # Anything written before these is emitted verbatim / breaks parsing.
+  if (length(content) > 0) {
+    prologue <- paste(
+      "^#!",                        # shebang
+      "^\\s*<\\?php",               # PHP open tag
+      "^\\s*<\\?xml",               # XML declaration
+      "^\\s*<!DOCTYPE",             # (X)HTML doctype
+      sep = "|"
+    )
+    if (grepl(prologue, content[1], ignore.case = TRUE)) {
+      return(1L)
     }
   }
 
-  if (has_shebang) {
-    return(1)
-  }
-
   # Default: insert at beginning
-  return(0)
+  0L
 }

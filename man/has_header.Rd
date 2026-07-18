@@ -13,5 +13,8 @@ has_header(file)
 Logical. TRUE if file has a header.
 }
 \description{
-Check if file has a header
+Looks for header field lines (see \code{\link[=header_field_lines]{header_field_lines()}}) in the first 30
+lines of the file. Documentation comments such as roxygen blocks, YAML
+metadata fields (e.g. \verb{author:} in an R Markdown document or a YAML
+config), and markdown syntax are not considered headers.
 }

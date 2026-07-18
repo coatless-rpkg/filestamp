@@ -73,7 +73,9 @@ languages <- function() {
 #'
 #' @param file Character. Path to file.
 #'
-#' @return stamp_language object.
+#' @return stamp_language object, or NULL if the extension is not registered
+#'   (so callers can skip files with no known comment syntax rather than
+#'   stamping them with the wrong markers).
 #' @export
 detect_language <- function(file) {
   ext <- tolower(tools::file_ext(file))
@@ -87,8 +89,8 @@ detect_language <- function(file) {
     }
   }
 
-  # Default to plain text
-  language_get("text")
+  # Unknown extension: no safe comment syntax to use
+  NULL
 }
 
 #' Format header according to language's comment style

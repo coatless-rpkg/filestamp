@@ -10,7 +10,7 @@ guess_line_ending(content)
 \item{content}{Raw vector. File content.}
 }
 \value{
-Character. Line ending: \code{"\\n"} (LF), \code{"\\r"} (CR), or \code{"\\r\\n"(CRLF)}.
+Character. Line ending: \code{"\\n"} (LF), \code{"\\r"} (CR), or \code{"\\r\\n"} (CRLF).
 }
 \description{
 Guess line endings

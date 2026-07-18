@@ -15,6 +15,33 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#' Escape regular expression metacharacters
+#'
+#' @param x Character vector.
+#'
+#' @return Character vector with metacharacters escaped.
+#' @keywords internal
+regex_escape <- function(x) {
+  gsub("([][{}()+*^$|\\\\?.])", "\\\\\\1", x)
+}
+
+#' Find the end of a YAML front matter block
+#'
+#' @param content Character vector. File content lines.
+#'
+#' @return Integer. Line number of the closing fence, or 0 if the file does
+#'   not start with YAML front matter.
+#' @keywords internal
+yaml_front_matter_end <- function(content) {
+  fences <- which(grepl("^---\\s*$", content))
+
+  if (length(fences) >= 2 && fences[1] == 1) {
+    return(fences[2])
+  }
+
+  0L
+}
+
 #' Get file information (encoding, line endings, etc.)
 #'
 #' @param file Character. Path to file.
@@ -29,6 +56,10 @@ header_file_info <- function(file) {
   # Detect encoding
   encoding <- guess_encoding(content)
 
+  # Detect a UTF-8 byte-order mark so it can be preserved on write
+  has_bom <- length(content) >= 3 &&
+    content[1] == 0xEF && content[2] == 0xBB && content[3] == 0xBF
+
   # Detect line endings
   line_ending <- guess_line_ending(content)
 
@@ -39,6 +70,7 @@ header_file_info <- function(file) {
     list(
       path = file,
       encoding = encoding,
+      has_bom = has_bom,
       line_ending = line_ending,
       read_only = read_only
     ),
@@ -77,7 +109,7 @@ guess_encoding <- function(content) {
 #'
 #' @param content Raw vector. File content.
 #'
-#' @return Character. Line ending: `"\n"` (LF), `"\r"` (CR), or `"\r\n"(CRLF)`.
+#' @return Character. Line ending: `"\n"` (LF), `"\r"` (CR), or `"\r\n"` (CRLF).
 #' @keywords internal
 guess_line_ending <- function(content) {
   # Convert to character

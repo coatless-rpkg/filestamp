@@ -146,3 +146,24 @@ test_that("guess_line_ending(): handles mixed line endings", {
   # For this test, we'll accept any valid ending
   expect_true(ending %in% c("\n", "\r", "\r\n"))
 })
+
+# Test yaml_front_matter_end() ----
+
+test_that("yaml_front_matter_end(): finds the closing fence", {
+  content <- c("---", "title: \"Doc\"", "author: \"Jane\"", "---", "", "text")
+  expect_equal(yaml_front_matter_end(content), 4L)
+})
+
+test_that("yaml_front_matter_end(): returns 0 without front matter", {
+  # No fences at all
+  expect_equal(yaml_front_matter_end(c("x <- 1", "y <- 2")), 0L)
+
+  # Fence not on line 1
+  expect_equal(yaml_front_matter_end(c("text", "---", "more", "---")), 0L)
+
+  # Unclosed fence
+  expect_equal(yaml_front_matter_end(c("---", "title: \"Doc\"")), 0L)
+
+  # Empty input
+  expect_equal(yaml_front_matter_end(character(0)), 0L)
+})

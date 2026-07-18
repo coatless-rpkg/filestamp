@@ -211,3 +211,123 @@ test_that("header_find_files(): finds correct files", {
   # Cleanup
   cleanup_test_dir(test_dir)
 })
+
+# Self-application regression test ----
+
+test_that("stamp_dir(): stamps roxygen-documented package sources (self-application)", {
+  # Setup: A mini R/ directory mirroring filestamp's own pre-stamp sources,
+  # including the source line that historically defeated has_header()
+  pkg_dir <- file.path(tempdir(), "filestamp_selfapply", "R")
+  dir.create(pkg_dir, recursive = TRUE)
+
+  validation_lines <- c(
+    "#' Check if file has a header",
+    "#'",
+    "#' @param file Character. Path to file.",
+    "#'",
+    "#' @return Logical. TRUE if file has a header.",
+    "#' @export",
+    "has_header <- function(file) {",
+    "  content <- readLines(file, n = 20)",
+    "  any(grepl(\"copyright|author|license\", content, ignore.case = TRUE))",
+    "}"
+  )
+  helpers_lines <- c(
+    "#' Helper for adding authors",
+    "#'",
+    "#' @param new_author Character. New author to add.",
+    "#'",
+    "#' @return Function to update author field.",
+    "#' @author Someone Else",
+    "#' @export",
+    "author_add <- function(new_author) new_author"
+  )
+  writeLines(validation_lines, file.path(pkg_dir, "validation.R"))
+  writeLines(helpers_lines, file.path(pkg_dir, "helpers.R"))
+
+  # Execute: The exact call used to stamp filestamp itself
+  suppressMessages(
+    stamp_dir(pkg_dir, template = "agpl-3", recursive = TRUE, action = "modify",
+              copyright = "2025", author = "James J Balamuta")
+  )
+
+  # Verify: Every file was stamped and still parses as valid R
+  for (f in list.files(pkg_dir, full.names = TRUE)) {
+    content <- readLines(f)
+    expect_equal(content[1], "# Copyright (c) 2025")
+    expect_equal(content[2], "# Author: James J Balamuta")
+    expect_no_error(parse(f))
+  }
+
+  # Verify: The roxygen docs survived byte-for-byte
+  v <- readLines(file.path(pkg_dir, "validation.R"))
+  expect_equal(tail(v, length(validation_lines)), validation_lines)
+  h <- readLines(file.path(pkg_dir, "helpers.R"))
+  expect_equal(tail(h, length(helpers_lines)), helpers_lines)
+
+  # Execute again: Re-stamping must be a no-op (idempotent)
+  before <- lapply(list.files(pkg_dir, full.names = TRUE), readLines)
+  suppressMessages(suppressWarnings(
+    stamp_dir(pkg_dir, template = "agpl-3", recursive = TRUE, action = "modify",
+              copyright = "2025", author = "James J Balamuta")
+  ))
+  after <- lapply(list.files(pkg_dir, full.names = TRUE), readLines)
+  expect_identical(after, before)
+
+  # Cleanup
+  unlink(file.path(tempdir(), "filestamp_selfapply"), recursive = TRUE)
+})
+
+# Directory safety: backups and unknown formats ----
+
+test_that("stamp_dir(): does not stamp or overwrite .bck backup files on a rerun", {
+  # Setup: A directory with one R file
+  d <- file.path(tempdir(), "filestamp_bck_rerun")
+  unlink(d, recursive = TRUE)
+  dir.create(d)
+  writeLines("x <- 1", file.path(d, "a.R"))
+
+  # First run with backups: creates a.R.bck holding the pristine original
+  suppressMessages(stamp_dir(d, action = "backup", copyright = "2025", author = "J"))
+  bck <- file.path(d, "a.R.bck")
+  expect_true(file.exists(bck))
+  original_bck <- readLines(bck)
+
+  # header_find_files must not surface the backup
+  expect_false(any(grepl("\\.bck$", header_find_files(d))))
+
+  # Second run must not touch the backup (the user's safety net)
+  suppressMessages(suppressWarnings(
+    stamp_dir(d, action = "modify", copyright = "2025", author = "J")
+  ))
+  expect_equal(readLines(bck), original_bck)
+
+  # Cleanup
+  unlink(d, recursive = TRUE)
+})
+
+test_that("stamp_dir(): reports comment-less files as skipped, not success", {
+  # Setup: A directory with a stampable file and a JSON file
+  d <- file.path(tempdir(), "filestamp_skip_json")
+  unlink(d, recursive = TRUE)
+  dir.create(d)
+  writeLines("x <- 1", file.path(d, "a.R"))
+  writeLines('{"a": 1}', file.path(d, "config.json"))
+
+  # Execute
+  result <- suppressMessages(suppressWarnings(
+    stamp_dir(d, copyright = "2025", author = "J")
+  ))
+
+  # Verify: JSON reported as skipped and left valid; R file stamped
+  statuses <- vapply(result$results,
+                     function(r) paste0(basename(r$file), ":", r$status),
+                     character(1))
+  expect_true("config.json:skipped" %in% statuses)
+  expect_true("a.R:success" %in% statuses)
+  # JSON left byte-for-byte intact (not stamped)
+  expect_equal(readLines(file.path(d, "config.json")), '{"a": 1}')
+
+  # Cleanup
+  unlink(d, recursive = TRUE)
+})

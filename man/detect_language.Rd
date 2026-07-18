@@ -10,7 +10,9 @@ detect_language(file)
 \item{file}{Character. Path to file.}
 }
 \value{
-stamp_language object.
+stamp_language object, or NULL if the extension is not registered
+(so callers can skip files with no known comment syntax rather than
+stamping them with the wrong markers).
 }
 \description{
 Detect language based on file extension

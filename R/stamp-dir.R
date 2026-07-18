@@ -37,8 +37,11 @@ stamp_dir <- function(dir, template = NULL, action = "modify", pattern = NULL,
 
   results <- lapply(files, function(file) {
     tryCatch({
-      stamp_file(file, template, action, ...)
-      list(file = file, status = "success")
+      res <- stamp_file(file, template, action, ...)
+      # stamp_file() returns FALSE when it declines to write (unknown file
+      # type, or already stamped) -- surface that as "skipped", not "success"
+      status <- if (isFALSE(res)) "skipped" else "success"
+      list(file = file, status = status)
     }, error = function(e) {
       list(file = file, status = "error", message = conditionMessage(e))
     })
@@ -46,7 +49,7 @@ stamp_dir <- function(dir, template = NULL, action = "modify", pattern = NULL,
 
   # Return result object with class for pretty printing
   structure(
-    list(results = results, dir = dir, action = action),
+    list(results = results, dir = dir, action = action, operation = "Stamping"),
     class = "stamp_dir_results"
   )
 }
@@ -68,5 +71,8 @@ header_find_files <- function(dir, pattern = NULL, recursive = FALSE) {
   )
 
   # Filter directories
-  files[!file.info(files)$isdir]
+  files <- files[!file.info(files)$isdir]
+
+  # Never treat our own backup files as source to be (re)stamped
+  files[!grepl("\\.bck$", files)]
 }

@@ -10,7 +10,7 @@ extract_header(file)
 \item{file}{Character. Path to file.}
 }
 \value{
-List with header information.
+List with header information, or NULL if the file has no header.
 }
 \description{
 Extract header from file

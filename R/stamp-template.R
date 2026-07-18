@@ -120,14 +120,30 @@ stamp_template_load <- function(name) {
   # Parse YAML
   template_yaml <- yaml::read_yaml(template_path)
 
-  # Convert to stamp_template
-  fields <- lapply(template_yaml$fields, function(field) {
+  # Templates use one of two YAML field shapes: a named mapping
+  # (default.yml) or a list of records with a `name:` key (agpl-3.yml).
+  # Resolve a name for each field so downstream rendering, which keys off
+  # names(template$fields), works for both shapes.
+  raw_fields <- template_yaml$fields
+  field_names <- names(raw_fields)
+  if (is.null(field_names)) {
+    field_names <- rep("", length(raw_fields))
+  }
+  for (i in seq_along(raw_fields)) {
+    if (!nzchar(field_names[i])) {
+      field_names[i] <- raw_fields[[i]]$name %||% ""
+    }
+  }
+
+  fields <- lapply(seq_along(raw_fields), function(i) {
+    field <- raw_fields[[i]]
     stamp_template_field(
-      name = field$name,
+      name = field$name %||% field_names[i],
       default = field$default,
-      required = field$required
+      required = field$required %||% FALSE
     )
   })
+  names(fields) <- field_names
 
   stamp_template_create(
     name = template_yaml$name,
@@ -170,21 +186,43 @@ stamp_templates <- function() {
 #' @return Character. Rendered template.
 #' @keywords internal
 render_template <- function(template, file, ...) {
-  vars <- stamp_variables()
+  # Work on a private copy of the shared variable environment. Because
+  # environments have reference semantics, writing template fields or
+  # per-call values into the cached environment would leak them into every
+  # later render in the session, so copy the bindings into a fresh env.
+  base <- stamp_variables()
+  vars <- new.env(parent = emptyenv())
+  for (nm in ls(base)) vars[[nm]] <- base[[nm]]
 
   # Add file to environment
   vars$file <- file
 
-  # Add template fields to environment
+  dots <- list(...)
+
+  # Add template fields to environment, enforcing required fields
   if (!is.null(template$fields)) {
     for (field_name in names(template$fields)) {
       field <- template$fields[[field_name]]
-      vars[[field_name]] <- field$default
+      supplied <- field_name %in% names(dots)
+      value <- if (supplied) dots[[field_name]] else field$default
+
+      if (isTRUE(field$required) && !supplied &&
+          (is.null(field$default) || !nzchar(paste0(field$default)))) {
+        cli::cli_abort(c(
+          "Required template field {.field {field_name}} was not supplied.",
+          "i" = "Provide it, e.g. {.code stamp_file(file, {field_name} = \"...\")}."
+        ))
+      }
+
+      # Skip empty/NULL values so rendering never crashes on an empty
+      # replacement (leaves the placeholder untouched instead)
+      if (!is.null(value)) {
+        vars[[field_name]] <- value
+      }
     }
   }
 
   # Add custom variables
-  dots <- list(...)
   for (name in names(dots)) {
     vars[[name]] <- dots[[name]]
   }
@@ -214,8 +252,10 @@ render_template <- function(template, file, ...) {
         vars[[var_name]]
       }
 
-      # Convert var_value to character
+      # Convert var_value to character; skip empty/non-scalar values so an
+      # empty replacement can never crash gsub (leaves placeholder in place)
       var_value <- as.character(var_value)
+      if (length(var_value) != 1) next
 
       pattern <- paste0("\\{\\{", var_name, "\\}\\}")
       content <- gsub(pattern, var_value, content, fixed = FALSE)

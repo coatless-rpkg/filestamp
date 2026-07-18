@@ -207,3 +207,132 @@ test_that("render_template(): maintains unreplaced variables", {
   # Verify: Check unknown variable wasn't replaced
   expect_equal(unclass(rendered), "Unknown: {{unknown_var}}")
 })
+
+# Built-in template rendering and field-shape handling ----
+
+test_that("every built-in template renders default fields (no leftover placeholders)", {
+  withr::local_options(filestamp.variables = NULL, filestamp.company = "Acme")
+  withr::local_envvar(USER = "alice")
+
+  for (tmpl in stamp_templates()) {
+    test_file <- withr::local_tempfile(fileext = ".R")
+    writeLines("x <- 1", test_file)
+    suppressWarnings(stamp_file(test_file, template = tmpl))
+    content <- readLines(test_file)
+
+    # No template placeholder should survive rendering
+    expect_false(any(grepl("\\{\\{.*\\}\\}", content)),
+                 info = paste("template", tmpl, "left placeholders"))
+  }
+})
+
+test_that("stamp_template_load(): names fields for list-of-records YAML (agpl-3)", {
+  # agpl-3.yml uses the list-of-records field shape
+  template <- stamp_template_load("agpl-3")
+
+  expect_named(template$fields, c("copyright", "author"))
+  expect_equal(template$fields$copyright$default, "{{company}} {{year}}")
+})
+
+test_that("render_template(): does not leak field values between renders", {
+  withr::local_options(filestamp.variables = NULL)
+
+  t1 <- stamp_template_create(
+    name = "t1",
+    fields = stamp_template_describe(
+      project = stamp_template_field("project", "ProjectX", required = TRUE)
+    ),
+    content = stamp_template_content("P: {{project}}")
+  )
+  t2 <- stamp_template_create(
+    name = "t2",
+    fields = stamp_template_describe(
+      other = stamp_template_field("other", "Y", required = TRUE)
+    ),
+    content = stamp_template_content("Leaked: {{project}}")
+  )
+
+  r1 <- render_template(t1, "a.R")
+  r2 <- render_template(t2, "b.R")
+
+  # project belongs to t1 only; it must not appear in t2's render
+  expect_equal(as.character(r1), "P: ProjectX")
+  expect_equal(as.character(r2), "Leaked: {{project}}")
+})
+
+test_that("render_template(): errors clearly on a required field with no value", {
+  template <- stamp_template_create(
+    name = "needs_field",
+    fields = stamp_template_describe(
+      owner = stamp_template_field("owner", default = NULL, required = TRUE)
+    ),
+    content = stamp_template_content("Owner: {{owner}}")
+  )
+
+  # A helpful, non-cryptic error naming the field
+  expect_error(render_template(template, "a.R"), "owner")
+})
+
+test_that("stamp_file(): required field without a value leaves the file untouched", {
+  test_file <- withr::local_tempfile(fileext = ".R")
+  writeLines("x <- 1", test_file)
+
+  template <- stamp_template_create(
+    name = "needs_field",
+    fields = stamp_template_describe(
+      owner = stamp_template_field("owner", default = NULL, required = TRUE)
+    ),
+    content = stamp_template_content("Owner: {{owner}}")
+  )
+
+  expect_error(stamp_file(test_file, template = template), "owner")
+
+  # File must not have been half-written
+  expect_equal(readLines(test_file), "x <- 1")
+})
+
+test_that("stamp_templates(): lists the built-in templates", {
+  templates <- stamp_templates()
+  expect_setequal(templates, c(
+    "default",
+    "mit", "apache-2.0", "bsd-2-clause", "bsd-3-clause", "isc", "bsl-1.0",
+    "gpl-2", "gpl-3", "lgpl-2.1", "lgpl-3", "agpl-3", "mpl-2.0",
+    "unlicense", "cc0-1.0"
+  ))
+})
+
+test_that("every built-in license template renders and matches its SPDX identity", {
+  # Each new template renders with no leftover placeholders and produces
+  # valid R, and its License:/title line names the right license.
+  withr::local_options(filestamp.variables = NULL, filestamp.company = "Acme")
+  withr::local_envvar(USER = "alice")
+
+  identity <- list(
+    "apache-2.0"   = "Apache License",
+    "gpl-2"        = "GNU General Public License",
+    "gpl-3"        = "GNU General Public License",
+    "lgpl-2.1"     = "GNU Lesser General Public License",
+    "lgpl-3"       = "GNU Lesser General Public License",
+    "agpl-3"       = "GNU Affero General Public License",
+    "mpl-2.0"      = "Mozilla Public License",
+    "bsd-2-clause" = "Redistribution and use",
+    "bsd-3-clause" = "Neither the name",
+    "isc"          = "Permission to use, copy, modify",
+    "mit"          = "MIT License",
+    "unlicense"    = "released into the public domain",
+    "cc0-1.0"      = "CC0 1.0 Universal",
+    "bsl-1.0"      = "Boost Software License"
+  )
+
+  for (tmpl in names(identity)) {
+    test_file <- withr::local_tempfile(fileext = ".R")
+    writeLines("x <- 1", test_file)
+    suppressWarnings(stamp_file(test_file, template = tmpl))
+    content <- paste(readLines(test_file), collapse = "\n")
+
+    expect_false(grepl("\\{\\{", content), info = paste(tmpl, "left placeholders"))
+    expect_match(content, identity[[tmpl]], fixed = TRUE,
+                 info = paste(tmpl, "identity phrase"))
+    expect_no_error(parse(test_file))
+  }
+})
