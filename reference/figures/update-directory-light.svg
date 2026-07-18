@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 176" role="img" aria-labelledby="t d">
+  <title id="t">Build a bundle, then apply it</title>
+  <desc id="d">stamp_edits() builds a reusable bundle of header changes but touches no files. stamp_update() applies that bundle to a file or a whole directory, updating every already-stamped file and skipping files with no header.</desc>
+  <style>
+    .s{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .m{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
+    .lbl{letter-spacing:.10em;font-weight:700;font-size:11px}
+    .cap{font-size:11px}
+    .ink{fill:#3A2E24}.fn{fill:#2E6E9E}.key{fill:#9A5B2E}.str{fill:#4F7A3F}.num{fill:#B4691A}
+    .com{fill:#A99A85}.var{fill:#B4691A;font-weight:600}.stamp{fill:#A31621}.faint{fill:#A99A85}
+    .card{fill:#FBF8F2;stroke:#E3D6BC}
+    .badge{fill:#A31621}.bnum{fill:#FBF8F2}.accent{fill:#A31621}.astroke{stroke:#A31621}
+    .chip{fill:#F4ECDC;stroke:#E3D6BC}.ok{fill:#A31621}.skip{fill:#A99A85}
+  </style>
+
+  <!-- STEP 1: stamp_edits() builds a reusable bundle -->
+  <circle class="badge" cx="32" cy="18" r="9"/><text class="s bnum" x="32" y="21.5" font-size="10.5" font-weight="700" text-anchor="middle">1</text>
+  <text class="s lbl ink" x="48" y="22">A REUSABLE BUNDLE</text>
+  <rect class="card" x="24" y="44" width="256" height="76" rx="8" stroke-width="1"/>
+  <text class="m" x="42" y="70" xml:space="preserve"><tspan class="ink">edits &lt;- </tspan><tspan class="fn">stamp_edits</tspan><tspan class="ink">(</tspan></text>
+  <text class="m" x="42" y="88" xml:space="preserve"><tspan class="ink">  copyright = </tspan><tspan class="fn">year_extend</tspan><tspan class="ink">(),</tspan></text>
+  <text class="m" x="42" y="106" xml:space="preserve"><tspan class="ink">  author = </tspan><tspan class="fn">author_add</tspan><tspan class="ink">(</tspan><tspan class="str">"Sam"</tspan><tspan class="ink">))</tspan></text>
+
+  <!-- ARROW -->
+  <path class="astroke" d="M284 82 H296" stroke-width="2"/>
+  <path class="accent" d="M296 77.5 L304 82 L296 86.5 z"/>
+
+  <!-- STEP 2: stamp_update() applies it -->
+  <circle class="badge" cx="316" cy="18" r="9"/><text class="s bnum" x="316" y="21.5" font-size="10.5" font-weight="700" text-anchor="middle">2</text>
+  <text class="s lbl ink" x="332" y="22">APPLY IT</text>
+  <rect class="card" x="308" y="44" width="182" height="76" rx="8" stroke-width="1"/>
+  <text class="m" x="326" y="70" xml:space="preserve"><tspan class="fn">stamp_update</tspan><tspan class="ink">(</tspan></text>
+  <text class="m" x="326" y="88" xml:space="preserve"><tspan class="ink">  </tspan><tspan class="str">"R/"</tspan><tspan class="ink">, edits,</tspan></text>
+  <text class="m" x="326" y="106" xml:space="preserve"><tspan class="ink">  recursive = </tspan><tspan class="num">TRUE</tspan><tspan class="ink">)</tspan></text>
+
+  <!-- ARROW -->
+  <path class="astroke" d="M494 82 H506" stroke-width="2"/>
+  <path class="accent" d="M506 77.5 L514 82 L506 86.5 z"/>
+
+  <!-- STEP 3: every stamped file updated -->
+  <circle class="badge" cx="526" cy="18" r="9"/><text class="s bnum" x="526" y="21.5" font-size="10.5" font-weight="700" text-anchor="middle">3</text>
+  <text class="s lbl ink" x="542" y="22">EVERY FILE UPDATED</text>
+  <rect class="card" x="518" y="44" width="268" height="94" rx="8" stroke-width="1"/>
+  <text class="m ink" x="536" y="68" xml:space="preserve">R/</text>
+  <text class="m" x="536" y="86" xml:space="preserve"><tspan class="com">├─ </tspan><tspan class="ink">a.R</tspan></text>
+  <text class="m stamp" x="650" y="86" xml:space="preserve">(c) 2020-2026</text>
+  <text class="m" x="536" y="104" xml:space="preserve"><tspan class="com">├─ </tspan><tspan class="ink">b.R</tspan></text>
+  <text class="m stamp" x="650" y="104" xml:space="preserve">(c) 2019-2026</text>
+  <text class="m" x="536" y="122" xml:space="preserve"><tspan class="com">└─ </tspan><tspan class="skip">config.json</tspan></text>
+  <text class="m skip" x="650" y="122" xml:space="preserve">skipped</text>
+
+  <text class="s faint cap" x="24" y="160">stamp_edits() builds the bundle; stamp_update() applies it to a file or a whole directory.</text>
+</svg>

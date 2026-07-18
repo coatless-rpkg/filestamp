@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 232" role="img" aria-labelledby="t d">
+  <title id="t">filestamp license families</title>
+  <desc id="d">Fifteen built-in license templates grouped into permissive, copyleft, and public domain columns.</desc>
+  <style>
+    .s{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    .m{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:12px}
+    .lbl{letter-spacing:.10em;font-weight:700;font-size:11px}
+    .cap{font-size:11px}
+    .ink{fill:#E9DFCE}.fn{fill:#6FB2D6}.key{fill:#CE9A6A}.str{fill:#A3C07A}.num{fill:#E0A24E}
+    .com{fill:#8A7E6C}.var{fill:#E0A24E;font-weight:600}.stamp{fill:#E4726E}.faint{fill:#8A7E6C}
+    .card{fill:#221913;stroke:#3A2C20}
+    .badge{fill:#C63A43}.bnum{fill:#FBF8F2}.accent{fill:#E4726E}.astroke{stroke:#E4726E}
+    .chip{fill:#2A2016;stroke:#3A2C20}.ok{fill:#E4726E}.skip{fill:#8A7E6C}
+  </style>
+
+  <!-- Column 1: PERMISSIVE -->
+  <text class="s lbl ink" x="24" y="22">PERMISSIVE</text>
+  <rect class="chip" x="24" y="40" width="36" height="22" rx="5" stroke-width="1"/><text class="m ink" x="30" y="55">mit</text>
+  <rect class="chip" x="24" y="68" width="84" height="22" rx="5" stroke-width="1"/><text class="m ink" x="30" y="83">apache-2.0</text>
+  <rect class="chip" x="24" y="96" width="98" height="22" rx="5" stroke-width="1"/><text class="m ink" x="30" y="111">bsd-2-clause</text>
+  <rect class="chip" x="24" y="124" width="98" height="22" rx="5" stroke-width="1"/><text class="m ink" x="30" y="139">bsd-3-clause</text>
+  <rect class="chip" x="24" y="152" width="34" height="22" rx="5" stroke-width="1"/><text class="m ink" x="30" y="167">isc</text>
+  <rect class="chip" x="24" y="180" width="62" height="22" rx="5" stroke-width="1"/><text class="m ink" x="30" y="195">bsl-1.0</text>
+
+  <!-- Column 2: COPYLEFT -->
+  <text class="s lbl ink" x="150" y="22">COPYLEFT</text>
+  <rect class="chip" x="150" y="40" width="50" height="22" rx="5" stroke-width="1"/><text class="m ink" x="156" y="55">gpl-2</text>
+  <rect class="chip" x="150" y="68" width="50" height="22" rx="5" stroke-width="1"/><text class="m ink" x="156" y="83">gpl-3</text>
+  <rect class="chip" x="150" y="96" width="72" height="22" rx="5" stroke-width="1"/><text class="m ink" x="156" y="111">lgpl-2.1</text>
+  <rect class="chip" x="150" y="124" width="56" height="22" rx="5" stroke-width="1"/><text class="m ink" x="156" y="139">lgpl-3</text>
+  <rect class="chip" x="150" y="152" width="56" height="22" rx="5" stroke-width="1"/><text class="m ink" x="156" y="167">agpl-3</text>
+  <rect class="chip" x="150" y="180" width="64" height="22" rx="5" stroke-width="1"/><text class="m ink" x="156" y="195">mpl-2.0</text>
+
+  <!-- Column 3: PUBLIC DOMAIN -->
+  <text class="s lbl ink" x="256" y="22">PUBLIC DOMAIN</text>
+  <rect class="chip" x="256" y="40" width="78" height="22" rx="5" stroke-width="1"/><text class="m ink" x="262" y="55">unlicense</text>
+  <rect class="chip" x="256" y="68" width="64" height="22" rx="5" stroke-width="1"/><text class="m ink" x="262" y="83">cc0-1.0</text>
+
+  <!-- Caption -->
+  <text class="s faint cap" x="24" y="222">Fifteen built-in license templates.</text>
+</svg>

@@ -6,9 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Manage Copyright and Code Headers for R Files • filestamp</title>
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Manage Copyright and Code Headers for R Files">
 <meta name="description" content="Provides tools for creating, adding, and updating standardized headers for R files. Headers can include copyright notices, file descriptions, author information, and other metadata. The package supports both individual files and batch processing of entire directories.">
@@ -18,7 +18,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">filestamp</a>
 
@@ -31,12 +31,29 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/filestamp.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/licenses-and-templates.html">Licenses and templates</a></li>
+    <li><a class="dropdown-item" href="articles/language-support.html">Language support</a></li>
+    <li><a class="dropdown-item" href="articles/maintaining-headers.html">Maintaining headers</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/coatless-rpkg/filestamp/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
@@ -46,11 +63,12 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="filestamp-">filestamp <img src="reference/figures/filestamp-animated-logo.svg" width="170" align="right" alt="A hexagonal logo for filestamp"><a class="anchor" aria-label="anchor" href="#filestamp-"></a>
+<div class="page-header"><h1 id="filestamp-">filestamp <picture><source media="(prefers-color-scheme: dark)" srcset="reference/figures/filestamp-logo-dark-animated.svg"><img src="reference/figures/filestamp-logo-light-animated.svg" width="170" align="right" alt="A hexagonal logo for filestamp"></source></picture><a class="anchor" aria-label="anchor" href="#filestamp-"></a>
 </h1></div>
 <!-- badges: start -->
 
 <p><code>filestamp</code> makes it easy to add and maintain consistent headers across all files in your project, regardless of programming language. Headers can include copyright notices, file descriptions, authorship information, and other metadata.</p>
+<p><picture><source media="(prefers-color-scheme: dark)" srcset="reference/figures/hero-dark.svg"><img src="reference/figures/hero-light.svg" alt="Three steps: a plain source file, your header template with copyright, author, and license fields whose variables are filled in automatically, and the file with the rendered header stamped at the top in its own comment style, above the untouched code." width="100%"></source></picture></p>
 <div class="section level3">
 <h3 id="what-are-file-headers">What are file headers?<a class="anchor" aria-label="anchor" href="#what-are-file-headers"></a>
 </h3>
@@ -80,7 +98,7 @@
 </h3>
 <p>To use <code>filestamp</code>, you first need to load the package using the <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> function. This will make all the functions and features of <code>filestamp</code> available for use in your R session.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-pkg.thecoatlessprofessor.com/filestamp/" class="external-link">filestamp</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-pkg.thecoatlessprofessor.com/filestamp/">filestamp</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stamping-a-single-file">Stamping a Single File<a class="anchor" aria-label="anchor" href="#stamping-a-single-file"></a>
@@ -120,21 +138,23 @@
 <div class="section level3">
 <h3 id="using-built-in-templates">Using Built-in Templates<a class="anchor" aria-label="anchor" href="#using-built-in-templates"></a>
 </h3>
-<p>The package comes with several built-in templates:</p>
+<p>The package comes with built-in templates for the most common licenses, each reproducing the canonical license text:</p>
 <ul>
 <li>
 <code>default</code> - A simple header with copyright, author, and license information</li>
-<li>
-<code>mit</code> - MIT License header</li>
-<li>
-<code>gpl-3</code> - GNU General Public License header</li>
-<li>
-<code>agpl-3</code> - GNU Affero General Public License header</li>
+<li>Permissive: <code>mit</code>, <code>apache-2.0</code>, <code>bsd-2-clause</code>, <code>bsd-3-clause</code>, <code>isc</code>, <code>bsl-1.0</code>
+</li>
+<li>Copyleft: <code>gpl-2</code>, <code>gpl-3</code>, <code>lgpl-2.1</code>, <code>lgpl-3</code>, <code>agpl-3</code>, <code>mpl-2.0</code>
+</li>
+<li>Public domain: <code>unlicense</code>, <code>cc0-1.0</code>
+</li>
 </ul>
 <p>List available templates:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/stamp_templates.html">stamp_templates</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "default" "gpl-3"   "mit"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "agpl-3"       "apache-2.0"   "bsd-2-clause" "bsd-3-clause" "bsl-1.0"     </span></span>
+<span><span class="co">#&gt;  [6] "cc0-1.0"      "default"      "gpl-2"        "gpl-3"        "isc"         </span></span>
+<span><span class="co">#&gt; [11] "lgpl-2.1"     "lgpl-3"       "mit"          "mpl-2.0"      "unlicense"</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="creating-custom-templates">Creating Custom Templates<a class="anchor" aria-label="anchor" href="#creating-custom-templates"></a>
@@ -168,26 +188,39 @@
 <p>Make sure to use the <code><a href="reference/stamp_update.html">stamp_update()</a></code> function carefully, as it will modify existing files. Always create backups before making changes.</p>
 <p>Some helper functions may not work as expected if the file does not contain a header or if the header is not in the expected format.</p>
 </blockquote>
+<p>The two most common tasks have direct verbs:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Update copyright years in existing headers</span></span>
-<span><span class="fu"><a href="reference/stamp_update.html">stamp_update</a></span><span class="op">(</span><span class="st">"old_script.R"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  copyright <span class="op">=</span> <span class="fu"><a href="reference/stamp_update_helper_copyright_extend.html">stamp_update_helper_copyright_extend</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Bump the copyright year to the current year</span></span>
+<span><span class="fu"><a href="reference/stamp_bump_year.html">stamp_bump_year</a></span><span class="op">(</span><span class="st">"old_script.R"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Add a new author to existing headers</span></span>
-<span><span class="fu"><a href="reference/stamp_update.html">stamp_update</a></span><span class="op">(</span><span class="st">"collaborative_script.R"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  author <span class="op">=</span> <span class="fu"><a href="reference/stamp_update_helper_author_add.html">stamp_update_helper_author_add</a></span><span class="op">(</span><span class="st">"Jane Smith"</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Add a new author</span></span>
+<span><span class="fu"><a href="reference/stamp_add_author.html">stamp_add_author</a></span><span class="op">(</span><span class="st">"collaborative_script.R"</span>, <span class="st">"Jane Smith"</span><span class="op">)</span></span></code></pre></div>
+<p>For anything else, pass named updates to <code><a href="reference/stamp_update.html">stamp_update()</a></code>. Each value is a new value or a function of the field’s current value:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/stamp_update.html">stamp_update</a></span><span class="op">(</span><span class="st">"script.R"</span>,</span>
+<span>  copyright <span class="op">=</span> <span class="fu"><a href="reference/year_extend.html">year_extend</a></span><span class="op">(</span><span class="op">)</span>,        <span class="co"># extend the year, keep the owner</span></span>
+<span>  author    <span class="op">=</span> <span class="fu"><a href="reference/author_add.html">author_add</a></span><span class="op">(</span><span class="st">"Jane Smith"</span><span class="op">)</span>,</span>
+<span>  license   <span class="op">=</span> <span class="st">"MIT"</span>                 <span class="co"># or just set a value</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Bundle a set of edits with <code><a href="reference/stamp_edits.html">stamp_edits()</a></code> to reuse them, and point any update at a directory to apply it to every stamped file at once:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">edits</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stamp_edits.html">stamp_edits</a></span><span class="op">(</span></span>
+<span>  copyright <span class="op">=</span> <span class="fu"><a href="reference/year_extend.html">year_extend</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  author    <span class="op">=</span> <span class="fu"><a href="reference/author_add.html">author_add</a></span><span class="op">(</span><span class="st">"Jane Smith"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># update every already-stamped file in the project</span></span>
+<span><span class="fu"><a href="reference/stamp_update.html">stamp_update</a></span><span class="op">(</span><span class="st">"R/"</span>, <span class="va">edits</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="language-support">Language Support<a class="anchor" aria-label="anchor" href="#language-support"></a>
 </h2>
 <p><code>filestamp</code> supports 15+ programming languages out of the box:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List all supported languages</span></span>
 <span><span class="fu"><a href="reference/languages.html">languages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Add support for additional languages:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Register a new language</span></span>
 <span><span class="fu"><a href="reference/language_register.html">language_register</a></span><span class="op">(</span></span>
 <span>  <span class="st">"kotlin"</span>,</span>
@@ -201,7 +234,7 @@
 <h2 id="variables">Variables<a class="anchor" aria-label="anchor" href="#variables"></a>
 </h2>
 <p>Customize your headers with built-in and custom variables:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># List available variables</span></span>
 <span><span class="fu"><a href="reference/stamp_variables_list.html">stamp_variables_list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -261,7 +294,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>James Joseph Balamuta <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2826-8458" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>James Joseph Balamuta <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2826-8458" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -281,7 +314,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

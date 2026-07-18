@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 866 1000">
+  <defs>
+    <clipPath id="hex">
+      <path d="M433 0 L866 250 V750 L433 1000 L0 750 V250 Z"/>
+    </clipPath>
+
+    <!-- ============ FRAME BIAS + HEAVY UNDER-INK (kept starved, as client liked) ============ -->
+    <!-- heavy ink top-left (white=full) -> starved bottom-right (gray=thin) -->
+    <linearGradient id="biasGrad" gradientUnits="userSpaceOnUse" x1="235" y1="262" x2="628" y2="428">
+      <stop offset="0" stop-color="#f2f2f2"/>
+      <stop offset="0.45" stop-color="#dadada"/>
+      <stop offset="1" stop-color="#a0a0a0"/>
+    </linearGradient>
+
+    <filter id="underink" x="-6%" y="-8%" width="112%" height="116%" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.1 0.12" numOctaves="2" seed="7" result="noise"/>
+      <feColorMatrix in="noise" type="matrix"
+        values="0.34 0.34 0.34 0 0
+                0.34 0.34 0.34 0 0
+                0.34 0.34 0.34 0 0
+                0    0    0    0 1" result="ng"/>
+      <feComposite in="SourceGraphic" in2="ng" operator="arithmetic" k1="0" k2="0.5" k3="0.5" k4="0" result="mixed"/>
+      <feComponentTransfer in="mixed">
+        <feFuncR type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1"/>
+        <feFuncG type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1"/>
+        <feFuncB type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1"/>
+        <feFuncA type="discrete" tableValues="1"/>
+      </feComponentTransfer>
+    </filter>
+
+    <mask id="framemask" maskUnits="userSpaceOnUse" x="185" y="230" width="490" height="230">
+      <rect x="185" y="230" width="490" height="230" fill="url(#biasGrad)" filter="url(#underink)"/>
+    </mask>
+
+    <!-- ============ WORDMARK BIAS + LIGHT UNDER-INK (fine grain, letters stay whole) ============ -->
+    <!-- gentle bias along the word: left ("file") a touch heavier, right ("amp") a touch lighter -->
+    <linearGradient id="biasGradW" gradientUnits="userSpaceOnUse" x1="255" y1="340" x2="612" y2="360">
+      <stop offset="0" stop-color="#ececec"/>
+      <stop offset="0.55" stop-color="#dcdcdc"/>
+      <stop offset="1" stop-color="#cacaca"/>
+    </linearGradient>
+
+    <!-- finer, shallower speckle: mostly ink kept, only small crumbs removed; letters stay whole -->
+    <filter id="wordgrain" x="-6%" y="-10%" width="112%" height="120%" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.24 0.24" numOctaves="2" seed="19" result="wnoise"/>
+      <feColorMatrix in="wnoise" type="matrix"
+        values="0.34 0.34 0.34 0 0
+                0.34 0.34 0.34 0 0
+                0.34 0.34 0.34 0 0
+                0    0    0    0 1" result="wng"/>
+      <!-- ramp weighted heavier than noise -> shallow dips only -->
+      <feComposite in="SourceGraphic" in2="wng" operator="arithmetic" k1="0" k2="0.62" k3="0.38" k4="0" result="wmixed"/>
+      <!-- fine-resolution threshold (~0.66, 80 buckets): removes only the deepest crumbs, biased to the right (amp) -->
+      <feComponentTransfer in="wmixed">
+        <feFuncR type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"/>
+        <feFuncG type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"/>
+        <feFuncB type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"/>
+        <feFuncA type="discrete" tableValues="1"/>
+      </feComponentTransfer>
+    </filter>
+
+    <mask id="wordmask" maskUnits="userSpaceOnUse" x="185" y="285" width="490" height="130">
+      <rect x="185" y="285" width="490" height="130" fill="url(#biasGradW)" filter="url(#wordgrain)"/>
+    </mask>
+  </defs>
+
+  <g clip-path="url(#hex)">
+    <!-- warm desk ground (deepened for sheet contrast) -->
+    <path d="M433 0 L866 250 V750 L433 1000 L0 750 V250 Z" fill="#E7DBC2"/>
+
+    <!-- the SHEET (enlarged, portrait, centered) -->
+    <rect x="168" y="196" width="530" height="596" rx="18" fill="#FBF8F2" stroke="#C7BCA4" stroke-width="2.5" stroke-opacity="0.9"/>
+
+    <!-- faint body code lines, below the header, inside the sheet -->
+    <g stroke="#C9B6B3" stroke-width="13" stroke-linecap="round" stroke-opacity="0.68">
+      <line x1="200" y1="512" x2="560" y2="512"/>
+      <line x1="200" y1="546" x2="648" y2="546"/>
+      <line x1="200" y1="580" x2="498" y2="580"/>
+      <line x1="200" y1="636" x2="602" y2="636"/>
+      <line x1="200" y1="670" x2="664" y2="670"/>
+      <line x1="200" y1="704" x2="470" y2="704"/>
+      <line x1="200" y1="738" x2="614" y2="738"/>
+      <line x1="200" y1="772" x2="536" y2="772"/>
+    </g>
+
+    <!-- HEADER IMPRESSION: frame (heavy mask) and wordmark (light mask) split, both hand-stamped tilt -->
+    <!-- FRAME: heavy under-ink, masked in screen space (bias unrotated, as original) -->
+    <g transform="translate(433 335)"><g id="press" opacity="1">
+      <animateTransform attributeName="transform" type="scale" additive="sum" dur="5s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.04;0.078;0.88;0.95;1" values="1.14;0.975;1;1;1;1.14" keySplines="0.2 0.7 0.2 1;0.4 0 0.6 1;0 0 1 1;0.4 0 0.6 1;0 0 1 1"/>
+      <animate attributeName="opacity" dur="5s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.04;0.078;0.88;0.95;1" values="0;1;1;1;0;0" keySplines="0.2 0.7 0.2 1;0.4 0 0.6 1;0 0 1 1;0.4 0 0.6 1;0 0 1 1"/>
+      <g transform="translate(-433 -335)">
+<g mask="url(#framemask)">
+      <g transform="rotate(-4 433 340)">
+        <rect x="218" y="265" width="430" height="150" rx="24" fill="none" stroke="#A31621" stroke-width="16"/>
+      </g>
+    </g>
+    <!-- WORDMARK: light fine grain, its own mask, stays legible -->
+    <g mask="url(#wordmask)">
+      <g transform="rotate(-4 433 340)">
+        <text x="433" y="374" text-anchor="middle"
+              font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+              font-weight="700" font-size="95" letter-spacing="-3" fill="#A31621">filestamp</text>
+      </g>
+    </g>
+      </g></g></g>
+
+
+    <!-- crimson hex border -->
+    <path d="M433 0 L866 250 V750 L433 1000 L0 750 V250 Z"
+          transform="translate(433 500) scale(0.955) translate(-433 -500)"
+          fill="none" stroke="#A31621" stroke-width="14"/>
+  </g>
+</svg>

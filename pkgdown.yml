@@ -1,5 +1,12 @@
-pandoc: 3.1.11
-pkgdown: 2.1.1
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
-articles: {}
-last_built: 2025-04-21T09:40Z
+articles:
+  filestamp: filestamp.html
+  language-support: language-support.html
+  licenses-and-templates: licenses-and-templates.html
+  maintaining-headers: maintaining-headers.html
+last_built: 2026-07-18T06:02Z
+urls:
+  reference: https://r-pkg.thecoatlessprofessor.com/filestamp/reference
+  article: https://r-pkg.thecoatlessprofessor.com/filestamp/articles
